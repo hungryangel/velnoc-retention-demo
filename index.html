@@ -347,6 +347,16 @@
   .tbtoggle.on .sw{background:var(--vn-ink)}
   .prog button{color:var(--vn-ink);border-color:var(--vn-line)}
   .prog button.on{background:var(--vn-ink);border-color:var(--vn-ink);color:#fff}
+  /* 도입 문의 팝업: VELNOC 결 (그린 제거) */
+  #contactVeil{background:rgba(22,18,16,.52)}
+  #contactVeil .ctitle{color:var(--vn-ink)}
+  #contactVeil .cmsg{color:#5B5650}
+  #contactVeil .cbtn{border-radius:9999px}
+  #contactVeil .cbtn-call{background:var(--vn-ink);color:#fff}
+  #contactVeil .cbtn-kakao{background:#FEE500;color:#181600}
+  #contactVeil .cclose{color:var(--vn-sub)}
+  /* 복사/공유 확인 토스트: 폰 밖(뷰포트 기준)으로 띄워 항상 보이게 + 중립 잉크 */
+  .toast{position:fixed;bottom:calc(86px + env(safe-area-inset-bottom));z-index:9999;background:var(--vn-ink)}
 
   /* ---- 모바일: 스크롤 시 헤더 접힘 + 레이아웃 최적화 ---- */
   @media (max-width:640px){
@@ -816,11 +826,31 @@ function closeResult(){
   dayPhase='replied';
   showKakao();
 }
+function legacyCopy(text,okMsg){
+  try{
+    var ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');
+    ta.style.position='fixed';ta.style.top='0';ta.style.left='-9999px';
+    document.body.appendChild(ta);ta.focus();ta.select();
+    var ok=document.execCommand('copy');document.body.removeChild(ta);
+    toast(ok?okMsg:'주소: dental.demo.velnoc.com');
+  }catch(e){toast('주소: dental.demo.velnoc.com');}
+}
+function copyLink(url,okMsg){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(function(){toast(okMsg);}).catch(function(){legacyCopy(url,okMsg);});
+  }else{legacyCopy(url,okMsg);}
+}
+function smartShare(url,data,copyMsg){
+  if(navigator.share){
+    navigator.share(data).catch(function(err){
+      if(err&&err.name==='AbortError')return; // 사용자가 공유창을 닫음
+      copyLink(url,copyMsg); // 공유 미동작 시 복사로 폴백
+    });
+  }else{copyLink(url,copyMsg);}
+}
 function share(){
-  var url='https://dental.demo.velnoc.com/', data={title:'환자 회복 관리 · VELNOC',text:'시술 후 환자가 매일 받는 회복 관리 화면이에요',url:url};
-  if(navigator.share){navigator.share(data).catch(function(){});}
-  else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){toast('링크가 복사됐어요 · 친구에게 붙여넣기 하세요');}).catch(function(){toast('복사에 실패했어요 — dental.demo.velnoc.com');});}
-  else{toast('주소: dental.demo.velnoc.com');}
+  var url='https://dental.demo.velnoc.com/';
+  smartShare(url,{title:'환자 회복 관리 · VELNOC',text:'시술 후 환자가 매일 받는 회복 관리 화면이에요',url:url},'링크가 복사됐어요 · 친구에게 붙여넣기 하세요');
 }
 
 /* ---------- graduation ---------- */
@@ -843,10 +873,8 @@ function toggleCap(){annoOn=!annoOn;var b=document.getElementById('capx');if(b){
 function showContact(){document.getElementById('contactVeil').classList.add('show');}
 function closeContact(){document.getElementById('contactVeil').classList.remove('show');}
 function shareDemo(){
-  var url='https://dental.demo.velnoc.com/', data={title:'환자 회복 관리 데모 · VELNOC',text:'시술 후 환자가 매일 받는 회복 관리 화면 데모예요',url:url};
-  if(navigator.share){navigator.share(data).catch(function(){});}
-  else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){toast('데모 링크가 복사됐어요');}).catch(function(){toast('주소: dental.demo.velnoc.com');});}
-  else{toast('주소: dental.demo.velnoc.com');}
+  var url='https://dental.demo.velnoc.com/';
+  smartShare(url,{title:'환자 회복 관리 데모 · VELNOC',text:'시술 후 환자가 매일 받는 회복 관리 화면 데모예요',url:url},'데모 링크가 복사됐어요');
 }
 var tt;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show');},2300);}
 
