@@ -280,6 +280,20 @@
   .cele .go:active{transform:scale(.98)}
   .cele .sh{margin-top:9px;width:100%;background:none;border:none;font-family:inherit;font-size:.83rem;font-weight:600;color:var(--sage);cursor:pointer;padding:7px}
   .cele .celenote{margin-top:12px;font-size:.66rem;color:#A8B5B0;line-height:1.5;word-break:keep-all}
+  /* 칭찬 팝업 인터랙션: 회복 진척 + 컨페티 */
+  .cele{position:relative}
+  .celeprog{margin-top:15px;text-align:left}
+  .celeprog[hidden]{display:none}
+  .cp-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .cp-lab{font-size:.82rem;font-weight:700;color:var(--pine)}
+  .cp-val{font-size:.8rem;font-weight:800;color:var(--apricot-deep);font-variant-numeric:tabular-nums}
+  .cp-track{height:11px;background:var(--ok-bg);border-radius:99px;overflow:hidden}
+  .cp-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--apricot),var(--apricot-deep));transition:width 1.15s cubic-bezier(.2,.8,.2,1)}
+  @keyframes celepop{0%{transform:scale(.4);opacity:0}55%{transform:scale(1.18)}100%{transform:scale(1);opacity:1}}
+  .cele .bt.pop{animation:celepop .6s cubic-bezier(.2,1.4,.4,1) both}
+  .confetti{position:absolute;inset:0;border-radius:24px;overflow:hidden;pointer-events:none;z-index:6}
+  .confetti i{position:absolute;top:40px;width:9px;height:9px;border-radius:2px;will-change:transform,opacity;animation:confettiPop var(--dur,1100ms) cubic-bezier(.15,.7,.3,1) forwards}
+  @keyframes confettiPop{0%{opacity:0;transform:translate(0,0) rotate(0) scale(.5)}12%{opacity:1}100%{opacity:0;transform:translate(var(--dx,0),var(--dy,200px)) rotate(var(--rot,360deg)) scale(1)}}
   .cele .ctitle{font-size:1.18rem;font-weight:800;color:var(--ink)}
   .cele .cmsg{font-size:.84rem;color:var(--sage);line-height:1.55;margin-top:9px;word-break:keep-all}
   .cbtn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;border-radius:13px;padding:14px;font-family:inherit;font-size:.9rem;font-weight:700;text-decoration:none;margin-top:11px;cursor:pointer;box-sizing:border-box}
@@ -440,7 +454,7 @@
             </div>
           </div>
 
-          <div class="veil" id="veil"><div class="cele"><div class="bt"><svg viewBox="0 0 24 24"><path class="tf" d="M12 2C7.5 2 4.5 5 4.5 9c0 3 .9 4.6 1.4 7.4.4 2.3 1 5.6 2.6 5.6 1.4 0 1.6-2.2 1.9-4.1.3-1.6.9-1.9 1.6-1.9s1.3.3 1.6 1.9c.3 1.9.5 4.1 1.9 4.1 1.6 0 2.2-3.3 2.6-5.6.5-2.8 1.4-4.4 1.4-7.4 0-4-3-7-7.5-7z"/></svg></div><h3 id="celeH"></h3><p class="m" id="celeM"></p><button class="go" id="celeGo" onclick="advanceFromCele()"></button><button class="sh" onclick="share()">친구에게 소개하기</button><p class="celenote">실제 환자는 내일 이 시간에 카톡으로 다음 안내를 자동으로 받아요 · 위 버튼은 데모를 넘기는 용도예요</p></div></div>
+          <div class="veil" id="veil"><div class="cele"><div class="bt"><svg viewBox="0 0 24 24"><path class="tf" d="M12 2C7.5 2 4.5 5 4.5 9c0 3 .9 4.6 1.4 7.4.4 2.3 1 5.6 2.6 5.6 1.4 0 1.6-2.2 1.9-4.1.3-1.6.9-1.9 1.6-1.9s1.3.3 1.6 1.9c.3 1.9.5 4.1 1.9 4.1 1.6 0 2.2-3.3 2.6-5.6.5-2.8 1.4-4.4 1.4-7.4 0-4-3-7-7.5-7z"/></svg></div><h3 id="celeH"></h3><p class="m" id="celeM"></p><div class="celeprog" id="celeProg" hidden><div class="cp-row"><span class="cp-lab" id="cpLab"></span><span class="cp-val" id="cpVal"></span></div><div class="cp-track"><div class="cp-fill" id="cpFill"></div></div></div><button class="go" id="celeGo" onclick="advanceFromCele()"></button><button class="sh" onclick="share()">친구에게 소개하기</button><p class="celenote">실제 환자는 내일 이 시간에 카톡으로 다음 안내를 자동으로 받아요 · 위 버튼은 데모를 넘기는 용도예요</p><div class="confetti" id="confetti" aria-hidden="true"></div></div></div>
           <div class="veil" id="contactVeil"><div class="cele"><div class="ctitle">벨녹웍스에 도입 문의</div><p class="cmsg">환자 회복 관리, 우리 병원에도 — 편한 방법으로 연락 주세요.</p><a class="cbtn cbtn-call" href="tel:0507-1326-1691">📞 전화 · 0507-1326-1691</a><a class="cbtn cbtn-kakao" href="https://pf.kakao.com/_JDbbX/chat" target="_blank" rel="noopener">💬 카카오톡 채널 문의</a><button class="cclose" onclick="closeContact()">닫기</button></div></div>
           <div class="kinput" id="kinput">채널 메뉴 <span class="chev">⌄</span></div>
           <div class="toast" id="toast"></div>
@@ -803,8 +817,10 @@ function openResult(warn){
   var h=document.getElementById('celeH'),m=document.getElementById('celeM'),
       go=document.getElementById('celeGo'),sh=document.querySelector('.cele .sh'),
       note=document.querySelector('.cele .celenote'),bt=document.querySelector('.cele .bt');
+  var prog=document.getElementById('celeProg');
   if(warn){
     bt.style.display='none';
+    if(prog)prog.hidden=true;
     h.textContent='직접 확인이 필요해요';
     m.innerHTML=SAFE.warnBody;
     go.className='go warn';go.textContent='병원에 바로 연락하기';
@@ -820,9 +836,47 @@ function openResult(warn){
     note.textContent='닫으면 원장님 답장이 카톡으로 도착해요';
   }
   document.getElementById('veil').classList.add('show');
+  if(!warn)celebrateResult(bt);
+}
+function prefersReduce(){return !!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);}
+function celebrateResult(bt){
+  var day=curDay(),total=14,pct=Math.round(day/total*100),reduce=prefersReduce();
+  var prog=document.getElementById('celeProg'),lab=document.getElementById('cpLab'),
+      val=document.getElementById('cpVal'),fill=document.getElementById('cpFill');
+  if(prog)prog.hidden=false;
+  if(lab)lab.textContent='회복 '+day+'일째 기록 완료';
+  if(bt){bt.classList.remove('pop');void bt.offsetWidth;if(!reduce)bt.classList.add('pop');}
+  if(fill){fill.style.width='0%';
+    if(reduce){fill.style.width=pct+'%';}
+    else{requestAnimationFrame(function(){requestAnimationFrame(function(){fill.style.width=pct+'%';});});}}
+  if(val){
+    if(reduce){val.textContent=day+' / '+total+'일';}
+    else{var cur=0;val.textContent='0 / '+total+'일';
+      var step=function(){cur++;val.textContent=cur+' / '+total+'일';if(cur<day)setTimeout(step,150);};
+      setTimeout(step,200);}
+  }
+  burstConfetti();
+}
+function burstConfetti(){
+  var c=document.getElementById('confetti');if(!c)return;c.innerHTML='';
+  if(prefersReduce())return;
+  var cols=['#E8946A','#1E4D45','#FCE25A','#6FB89A','#E86A8C','#D97E52'];
+  for(var i=0;i<26;i++){
+    var p=document.createElement('i');
+    p.style.setProperty('--dx',(Math.random()*260-130).toFixed(0)+'px');
+    p.style.setProperty('--dy',(Math.random()*150+120).toFixed(0)+'px');
+    p.style.setProperty('--rot',(Math.random()*720-360).toFixed(0)+'deg');
+    p.style.setProperty('--dur',(Math.random()*500+900).toFixed(0)+'ms');
+    p.style.background=cols[i%cols.length];
+    p.style.left=(45+Math.random()*10)+'%';
+    if(Math.random()<.5)p.style.borderRadius='50%';
+    c.appendChild(p);
+  }
+  setTimeout(function(){if(c)c.innerHTML='';},1800);
 }
 function closeResult(){
   document.getElementById('veil').classList.remove('show');
+  var c=document.getElementById('confetti');if(c)c.innerHTML='';
   dayPhase='replied';
   showKakao();
 }
