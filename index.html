@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이음치과 · 회복 일기 (데모)</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Microsoft Clarity (행동 분석·히트맵·세션 녹화) -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x7ux8hv0w6");
+</script>
+<style>
+  :root{
+    --porcelain:#F5F8F6;--ink:#173F38;--pine:#1E4D45;--sage:#6B7E79;
+    --apricot:#E8946A;--apricot-deep:#D97E52;--card:#FFFFFF;--line:#DFE8E4;
+    --tooth-empty:#E3EBE7;--kbg:#A2B6CC;--kyellow:#FCE25A;--kink:#1B1B1B;
+    --ok:#2F7A5E;--ok-bg:#E7F3ED;--warn:#C75B36;--warn-bg:#FBEDE6;--stage-bg:#EDE7DA;
+    --patient-bg:#E7EDF1;--patient-card:#FFFFFF;--patient-line:#DBE3E9;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{font-size:16px}
+  body{font-family:'IBM Plex Sans KR',sans-serif;background:var(--stage-bg);color:var(--ink);min-height:100vh}
+
+  .topbar{position:sticky;top:0;z-index:50;background:var(--stage-bg);box-shadow:0 7px 9px -8px rgba(90,70,40,.22)}
+  .tbinner{max-width:560px;margin:0 auto;padding:12px 16px 11px}
+  .tbhead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .tbtitle{font-family:'Gowun Batang',serif;font-size:1rem;font-weight:700;color:var(--ink);line-height:1.3}
+  .tbutils{display:flex;gap:3px;flex:0 0 auto}
+  .tbsub{margin-top:5px;font-size:.7rem;color:#9A8E76;line-height:1.45}
+  .navrow{display:flex;align-items:center;gap:8px;margin-top:11px}
+  .navlab{font-size:.62rem;font-weight:700;letter-spacing:.04em;color:#9A8E76;white-space:nowrap}
+  .prog{display:flex;gap:5px;flex:1}
+  .prog button{flex:1;font-family:inherit;font-size:.72rem;font-weight:700;color:#6B6149;background:#fff;border:1px solid #DDD3BE;border-radius:99px;padding:7px 4px;cursor:pointer;transition:all .18s}
+  .prog button.on{background:var(--pine);border-color:var(--pine);color:#fff}
+  .reset{font-family:inherit;font-size:.7rem;font-weight:700;color:#8A7F68;background:none;border:none;cursor:pointer;white-space:nowrap;padding:5px 3px}
+  .toneset{display:flex;align-items:center;gap:8px;max-width:540px;margin:0 auto;padding:0 16px 12px}
+  .toneset .lab{font-size:.62rem;font-weight:700;letter-spacing:.06em;color:#9A8E76;white-space:nowrap}
+  .toneset .seg{display:flex;gap:5px;flex:1}
+  .toneset button{flex:1;font-family:inherit;font-size:.72rem;font-weight:700;color:#8A7F68;background:#F3EEE2;border:1px solid #DDD3BE;border-radius:99px;padding:6px 4px;cursor:pointer;transition:all .16s}
+  .toneset button.on{background:var(--apricot);border-color:var(--apricot);color:#3a1b0e}
+
+  .stage{position:relative;max-width:880px;margin:0 auto;padding:8px 0 70px;display:flex;justify-content:center}
+  .device{position:relative;width:392px;flex:0 0 auto;z-index:2}
+  .frame{background:linear-gradient(150deg,#3a3f47,#1a1d22 55%,#2c3037);border-radius:60px;padding:12px;box-shadow:0 0 0 2px #4a4f57,0 1px 0 2px rgba(255,255,255,.06) inset,0 34px 70px -24px rgba(30,50,46,.55),0 10px 24px -12px rgba(0,0,0,.4)}
+  .swrap{position:relative;border-radius:48px;overflow:hidden;background:#000;height:812px;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",system-ui,"Malgun Gothic",sans-serif}
+  .island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:116px;height:33px;background:#000;border-radius:20px;z-index:40}
+  .island:after{content:"";position:absolute;right:13px;top:50%;transform:translateY(-50%);width:9px;height:9px;border-radius:50%;background:#0d1418;box-shadow:0 0 0 1px #1c2a2e}
+  .btn-r{position:absolute;right:-3px;top:172px;width:3px;height:78px;border-radius:0 3px 3px 0;background:linear-gradient(#4a4f57,#2c3037)}
+  .btn-l{position:absolute;left:-3px;top:138px;width:3px;height:34px;border-radius:3px 0 0 3px;background:#2c3037}
+  .btn-l2{position:absolute;left:-3px;top:188px;width:3px;height:58px;border-radius:3px 0 0 3px;background:#2c3037}
+  .btn-l3{position:absolute;left:-3px;top:256px;width:3px;height:58px;border-radius:3px 0 0 3px;background:#2c3037}
+
+  .view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none}
+  .view.show{display:block}
+  .view::-webkit-scrollbar{display:none}
+
+  .status{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;height:50px;padding:0 24px;font-size:.82rem;font-weight:600;color:var(--kink)}
+  .status .ico{display:flex;align-items:center;gap:5px}
+  .status .ico svg{height:12px;width:auto;fill:var(--kink)}
+  .status .batt .cell{width:23px;height:12px;border:1.3px solid var(--kink);border-radius:3px;position:relative;padding:1.5px;display:inline-block}
+  .status .batt .cell:after{content:"";position:absolute;right:-3px;top:3.5px;width:2px;height:5px;border-radius:0 2px 2px 0;background:var(--kink)}
+  .status .batt .cell i{display:block;height:100%;width:72%;background:var(--kink);border-radius:1px}
+
+  /* SETUP */
+  .sview{background:var(--porcelain)}.sview .status{background:var(--porcelain)}
+  .setup{padding:10px 24px 34px}
+  .setup .badge{display:inline-block;font-size:.64rem;font-weight:700;letter-spacing:.08em;color:var(--apricot-deep);background:#fff;border:1px solid var(--line);border-radius:99px;padding:4px 11px}
+  .setup h1{font-size:1.32rem;font-weight:700;line-height:1.32;margin-top:11px}
+  .setup .lead{margin-top:8px;font-size:.78rem;color:var(--sage);line-height:1.5}
+  .setup .lead b{color:var(--pine)}
+  .fld{margin-top:13px}
+  .fld label{display:block;font-size:.76rem;font-weight:600;margin-bottom:6px}
+  .fld label .opt{font-weight:500;color:var(--apricot-deep);font-size:.7rem}
+  .fld input{width:100%;font-family:inherit;font-size:.9rem;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:11px 14px;outline:none}
+  .fld input:focus{border-color:var(--apricot);box-shadow:0 0 0 3px rgba(232,148,106,.18)}
+  .fld input::placeholder{color:#AEB9B4;font-weight:500}
+  .agewrap{display:flex;gap:7px}
+  .agewrap button{flex:1;font-family:inherit;font-size:.8rem;font-weight:600;color:var(--sage);background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 4px;cursor:pointer;transition:all .16s}
+  .agewrap button.on{background:var(--pine);border-color:var(--pine);color:#fff}
+  .agehint{margin-top:7px;font-size:.7rem;color:var(--sage);line-height:1.4}
+  .agehint b{color:var(--apricot-deep)}
+  .setpanel{margin-top:16px;background:#FBF8F1;border:1px solid #E8DFCC;border-radius:16px;padding:2px 15px 16px}
+  .setpanel-h{display:flex;align-items:center;gap:6px;font-size:.74rem;font-weight:700;color:var(--apricot-deep);letter-spacing:.01em;padding:12px 0 9px;border-bottom:1px solid #EFE7D6}
+  .setpanel-h .gear{font-size:.86rem}
+  .setpanel-h .setpanel-sub{font-weight:500;color:var(--sage);font-size:.7rem}
+  .setpanel .fld:first-of-type{margin-top:12px}
+  .setup .guide{margin-top:18px;text-align:center;font-size:.76rem;font-weight:600;color:var(--pine);line-height:1.45}
+  .startbtn{margin-top:11px;width:100%;background:linear-gradient(180deg,#EEA37C,#E2885C 58%,#D97E52);color:#3a1b0e;font-family:inherit;font-weight:800;font-size:1.04rem;letter-spacing:.01em;border:none;border-radius:15px;padding:16px;cursor:pointer;box-shadow:0 9px 20px -7px rgba(201,107,60,.55),0 3px 0 #C06A3F,inset 0 1px 0 rgba(255,255,255,.45);transition:transform .1s ease,box-shadow .1s ease;animation:btnbreath 2.8s ease-in-out infinite}
+  .startbtn:hover{animation:none;transform:translateY(-1px);box-shadow:0 13px 26px -7px rgba(201,107,60,.62),0 3px 0 #C06A3F,inset 0 1px 0 rgba(255,255,255,.5)}
+  .startbtn:active{animation:none;transform:translateY(3px);box-shadow:0 3px 9px -5px rgba(201,107,60,.5),0 0 0 #C06A3F,inset 0 1px 0 rgba(255,255,255,.3)}
+  @keyframes btnbreath{0%,100%{transform:scale(1)}50%{transform:scale(1.014)}}
+  .setup .note2{margin-top:11px;text-align:center;font-size:.68rem;color:var(--sage);line-height:1.7}
+  .setup .note2 b{color:var(--pine);font-weight:600}
+
+  /* KAKAO */
+  .kview{background:var(--kbg)}.kview .status{background:var(--kbg)}
+  .khead{position:sticky;top:50px;z-index:20;background:var(--kbg);display:flex;align-items:center;padding:6px 14px 10px;color:#23292e}
+  .khead .bk{flex:1;font-size:.92rem;font-weight:600}
+  .khead .ttl{flex:0 0 auto;text-align:center;line-height:1.15}
+  .khead .ttl .nm{font-size:.94rem;font-weight:700;display:flex;align-items:center;gap:4px;justify-content:center}
+  .khead .ttl .nm .v{width:15px;height:15px;border-radius:50%;background:#3d6df0;display:inline-flex;align-items:center;justify-content:center}
+  .khead .ttl .nm .v svg{width:9px;height:9px;fill:#fff}
+  .khead .ttl .ph{display:block;font-size:.72rem;color:#46505a;font-weight:500;margin-top:3px;letter-spacing:.01em}
+  .khead .acts{flex:1;display:flex;gap:14px;justify-content:flex-end}
+  .khead .acts svg{width:21px;height:21px;stroke:#23292e;stroke-width:2;fill:none}
+  .kbody{padding:8px 12px 96px}
+  .kdate{text-align:center;font-size:.68rem;color:#41505d;margin:14px 0 12px;font-weight:500}
+  .krow{display:flex;gap:8px;align-items:flex-start;opacity:0;transform:translateY(8px);transition:all .5s;margin-bottom:12px}
+  .krow.in{opacity:1;transform:none}
+  .kava{width:36px;height:36px;border-radius:13px;background:var(--pine);flex:0 0 auto;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .kava svg{width:19px;height:19px;fill:#fff}
+  .kmid{max-width:80%}
+  .kname{font-size:.72rem;color:#33404b;margin:0 0 5px 3px}
+  .krow .bub{display:flex;align-items:flex-end;gap:6px}
+  .kcard{background:#fff;border-radius:3px 16px 16px 16px;overflow:hidden;box-shadow:0 1px 1.5px rgba(20,40,60,.14)}
+  .kalim{background:var(--kyellow);font-weight:700;font-size:.8rem;padding:11px 15px;color:#3a2f00;display:flex;align-items:center;gap:7px}
+  .ktext{padding:14px 16px 8px;font-size:.85rem;line-height:1.65;color:#1f1f1f;white-space:pre-line}
+  .ktext .dr{font-weight:700;color:var(--pine)}
+  .kgo{border-top:1px solid #eef0f2;padding:14px;text-align:center;font-size:.86rem;font-weight:700;color:#2b6a5a;cursor:pointer}
+  .kgo:active{background:#fafafa}
+  .ktime{font-size:.62rem;color:#3f4d59;white-space:nowrap;padding-bottom:2px}
+  .ktyping{display:flex;gap:4px;padding:15px 17px}
+  .ktyping span{width:7px;height:7px;border-radius:50%;background:#C4CDD6;animation:bob 1s infinite}
+  .ktyping span:nth-child(2){animation-delay:.15s}.ktyping span:nth-child(3){animation-delay:.3s}
+  @keyframes bob{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+  .kinput{position:absolute;bottom:0;left:0;right:0;z-index:35;background:#fff;display:none;align-items:center;gap:10px;padding:11px 15px 20px;border-top:1px solid #f0f0f0}
+  .kinput .plus{width:24px;height:24px;border-radius:50%;border:2px solid #c2c2c2;color:#b5b5b5;display:flex;align-items:center;justify-content:center;font-size:1rem;flex:0 0 auto}
+  .kinput .ph2{flex:1;color:#b3b3b3;font-size:.86rem}
+  .ksent{display:flex;justify-content:flex-end;margin:0 2px 12px}
+  .ksent .bw{display:flex;align-items:flex-end;gap:6px}
+  .ksent .b{max-width:80%;background:var(--kyellow);color:#1b1b1b;font-size:.85rem;line-height:1.5;border-radius:16px 4px 16px 16px;padding:11px 14px;white-space:pre-line;box-shadow:0 1px 1.5px rgba(20,40,60,.14)}
+  .ksent .tm{font-size:.62rem;color:#3f4d59;white-space:nowrap;padding-bottom:2px}
+  .knote{text-align:center;margin:2px 16px 14px}
+  .knote .pill2{display:inline-block;background:rgba(23,63,56,.09);color:#33433d;font-size:.68rem;font-weight:600;line-height:1.5;border-radius:12px;padding:8px 13px}
+  .kreply .kalim{background:#E1F0E8;color:#1c5a43}
+  .pullbtn{display:block;margin:0 auto 16px;background:#fff;border:1px solid var(--line);color:var(--pine);font-family:inherit;font-size:.76rem;font-weight:700;border-radius:99px;padding:8px 16px;cursor:pointer}
+  .pullbtn:active{transform:scale(.97)}
+  .lockednote{margin-top:16px;background:#E8EEF2;border:1px dashed #C3D0D8;border-radius:14px;padding:13px 15px;font-size:.79rem;color:#5e6e76;line-height:1.5;text-align:center}
+  .lockednote b{color:var(--pine)}
+  .donecard{margin-top:18px;background:var(--ok-bg);border:1px solid #CDE6D8;border-radius:16px;padding:15px 16px}
+  .donecard .hd{display:flex;align-items:center;gap:6px;font-weight:700;font-size:.88rem;color:var(--ok)}
+  .donecard .s{margin-top:5px;font-size:.8rem;color:#4a6a5c;line-height:1.5}
+
+  /* DIARY */
+  .dview{background:var(--patient-bg)}.dview .status{background:#fff}
+  .kbar{position:sticky;top:50px;z-index:20;display:flex;align-items:center;gap:8px;background:#fff;border-bottom:1px solid #E6EBEE;box-shadow:0 2px 6px -4px rgba(40,60,80,.25);padding:9px 14px}
+  .kbar .x{font-size:1rem;color:#3b3b3b;cursor:pointer;width:22px;line-height:1}
+  .kbar .x:active{opacity:.5}
+  .kbar .kt{flex:1;text-align:center;font-size:.78rem;color:#333;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:5px}
+  .kbar .kt svg{width:10px;height:10px;fill:#9aa3ab}
+  .kbar .km{color:#666;font-size:1.1rem;width:22px;text-align:right;line-height:1}
+  .dwrap{padding:6px 22px 40px}
+  .clinic{display:flex;align-items:center;gap:8px;padding:8px 0 18px}
+  .cmark{width:27px;height:27px;border-radius:9px;background:var(--pine);display:flex;align-items:center;justify-content:center}
+  .cmark svg{width:16px;height:16px;fill:#fff}
+  .cname{font-weight:700;font-size:1.02rem;letter-spacing:.02em}
+  .dchip{margin-left:auto;font-size:.74rem;font-weight:600;color:var(--sage);background:#fff;border:1px solid var(--line);padding:5px 11px;border-radius:99px}
+  .rise{opacity:0;transform:translateY(13px);animation:rise .5s ease forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @keyframes pulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  .greet h1{font-size:1.4rem;font-weight:700;line-height:1.36;letter-spacing:-.01em}
+  .greet .gsub{margin-top:8px;font-size:.86rem;color:var(--sage);line-height:1.55}
+  .streak{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px 14px 14px}
+  .srow{display:flex;justify-content:space-between}
+  .tday{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+  .tday svg{width:29px;height:29px}.tday .d{font-size:.62rem;color:var(--sage);font-weight:500}
+  .tf{fill:#fff;stroke:var(--pine);stroke-width:1.6}
+  .tdone .tf{fill:var(--pine);stroke:var(--pine)}.tempty .tf{fill:var(--tooth-empty);stroke:var(--tooth-empty)}
+  .ttoday .tf{fill:#fff;stroke:var(--apricot-deep);stroke-width:2}.ttoday{animation:pulse 2s ease-in-out infinite}.ttoday .d{color:var(--apricot-deep);font-weight:700}
+  .slabel{margin-top:12px;text-align:center;font-size:.82rem;font-weight:600;color:var(--pine)}.slabel strong{color:var(--apricot-deep)}
+  .engine{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 16px}
+  .engine h2{font-size:1.12rem;font-weight:700}
+  .engine .micro{font-size:.72rem;color:var(--sage);margin-top:5px;line-height:1.5}
+  .q{margin-top:16px}.qlab{font-size:.82rem;font-weight:600;margin-bottom:4px}
+  .qhint{font-size:.7rem;color:var(--sage);line-height:1.42;margin-bottom:8px}
+  .qhint.pain{margin:8px 0 0}
+  .qhint.warn{color:var(--warn);font-weight:600}
+  .pills{display:flex;gap:7px}
+  .pill{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:inherit;font-weight:600;color:var(--sage);background:#F4F7F9;border:1.5px solid var(--patient-line);border-radius:12px;padding:9px 3px;cursor:pointer;transition:all .16s}
+  .pill .pt{font-size:.79rem}
+  .pill .ps{font-size:.62rem;font-weight:500;opacity:.78;line-height:1.1}
+  .pill:active{transform:scale(.96)}.pill.sel{background:var(--pine);border-color:var(--pine);color:#fff}.pill.sel .ps{opacity:.82}.pill.sel.wp{background:var(--warn);border-color:var(--warn)}
+  .srange{display:flex;align-items:center;gap:12px;margin-top:3px}
+  input[type=range]{flex:1;accent-color:var(--pine);height:22px}
+  .pv{font-weight:700;font-size:1.1rem;min-width:26px;text-align:center}
+  .sub{margin-top:18px;width:100%;background:var(--apricot);color:#3a1b0e;font-family:inherit;font-weight:700;font-size:.9rem;border:none;border-radius:12px;padding:14px;cursor:pointer;transition:transform .12s,background .2s}
+  .sub:disabled{background:var(--tooth-empty);color:#a8b5b0;cursor:default}.sub:not(:disabled):active{transform:scale(.985)}
+  .fb{margin-top:15px;border-radius:14px;padding:14px 15px;display:none}.fb.show{display:block;animation:rise .4s ease both}
+  .fb.ok{background:var(--ok-bg)}.fb.warn{background:var(--warn-bg)}
+  .fb .ft{display:flex;align-items:center;gap:7px;font-weight:700;font-size:.88rem}
+  .fb.ok .ft{color:var(--ok)}.fb.warn .ft{color:var(--warn)}
+  .fb p{margin-top:6px;font-size:.83rem;line-height:1.55}
+  .callbtn{margin-top:11px;display:inline-flex;align-items:center;gap:6px;background:var(--warn);color:#fff;font-weight:700;font-size:.81rem;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;text-decoration:none}
+  .doc{margin-top:13px;position:relative;padding:3px 2px 3px 15px;display:none}.doc.show{display:block;animation:rise .45s ease both}
+  .doc:before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:3px;background:var(--apricot);border-radius:3px}
+  .doc .vc{font-size:1rem;line-height:1.6;color:var(--pine)}
+  .doc .sg{margin-top:7px;font-size:.73rem;color:var(--sage);font-weight:600}
+  .nextwrap{margin-top:16px;display:none}.nextwrap.show{display:block;animation:rise .45s ease both}
+  .nextbtn{width:100%;background:var(--pine);color:#fff;font-family:inherit;font-weight:700;font-size:.9rem;border:none;border-radius:12px;padding:14px;cursor:pointer}
+  .nextbtn:active{transform:scale(.985)}
+  .rhead{margin-top:24px;margin-bottom:11px;display:flex;align-items:baseline;justify-content:space-between}
+  .rhead h3{font-size:.98rem;font-weight:700}.rhead .cnt{font-size:.8rem;font-weight:600;color:var(--sage)}.rhead .cnt strong{color:var(--apricot-deep)}
+  .task{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px 15px;display:flex;align-items:center;gap:12px;margin-bottom:9px;cursor:pointer;transition:border-color .2s,transform .12s}
+  .task:active{transform:scale(.985)}
+  .task .bx{width:25px;height:25px;border-radius:8px;border:2px solid var(--line);flex:0 0 auto;display:flex;align-items:center;justify-content:center;transition:all .2s}
+  .task .bx svg{width:13px;height:13px;fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.4);transition:all .25s cubic-bezier(.2,1.6,.4,1)}
+  .task.done{border-color:var(--pine)}.task.done .bx{background:var(--pine);border-color:var(--pine)}.task.done .bx svg{opacity:1;transform:scale(1)}
+  .task .tx b{display:block;font-size:.9rem;font-weight:600}.task .tx span{display:block;margin-top:2px;font-size:.76rem;color:var(--sage)}
+  .task.done .tx b{text-decoration:line-through;text-decoration-color:var(--sage);color:var(--sage)}
+  .timeline{margin-top:26px}.timeline h3{font-size:1.08rem;font-weight:700;margin-bottom:13px}
+  .entry{position:relative;padding-left:19px;padding-bottom:17px}
+  .entry:before{content:"";position:absolute;left:3px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--apricot)}
+  .entry:after{content:"";position:absolute;left:6.3px;top:13px;bottom:-2px;width:1.5px;background:var(--line)}
+  .entry:last-child:after{display:none}
+  .entry .ed{font-size:.74rem;font-weight:700}.entry .es{font-size:.78rem;color:var(--sage);margin-top:3px}
+  .entry .ec{font-size:.88rem;color:var(--pine);line-height:1.5;margin-top:5px}
+  .empty{font-size:.8rem;color:var(--sage);padding-left:2px}
+  .foot{margin-top:30px;text-align:center;font-size:.68rem;color:var(--sage);line-height:1.7}.foot b{color:var(--pine)}
+  .grad{margin-top:8px;background:linear-gradient(135deg,#1E4D45,#173F38);color:#EAF2EE;border-radius:20px;padding:26px 22px;text-align:center}
+  .grad .cap{font-size:1.9rem}.grad h2{font-size:1.3rem;font-weight:700;margin-top:6px}.grad p{font-size:.85rem;line-height:1.6;color:#BFD4CC;margin-top:9px}
+  .restartbtn{margin-top:18px;width:100%;background:#fff;color:var(--pine);font-family:inherit;font-weight:700;font-size:.88rem;border:none;border-radius:13px;padding:13px;cursor:pointer}
+
+  .veil{position:absolute;inset:0;background:rgba(23,63,56,.45);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .35s;z-index:45}
+  .veil.show{opacity:1;pointer-events:auto}
+  .cele{background:#fff;border-radius:24px;padding:32px 24px 24px;width:100%;max-width:300px;text-align:center;transform:translateY(18px) scale(.96);transition:transform .42s cubic-bezier(.2,1.4,.4,1)}
+  .veil.show .cele{transform:none}
+  .cele .bt{width:60px;height:60px;margin:0 auto 4px}.cele .bt .tf{fill:var(--apricot);stroke:var(--apricot-deep);stroke-width:1.4}
+  .cele h3{font-size:1.22rem;font-weight:700;margin-top:6px}.cele h3 strong{color:var(--apricot-deep)}
+  .cele .m{margin-top:9px;font-size:.86rem;color:var(--sage);line-height:1.6}
+  .cele .go{margin-top:20px;width:100%;background:var(--pine);color:#fff;border:none;border-radius:13px;padding:14px;font-size:.92rem;font-weight:700;font-family:inherit;cursor:pointer}
+  .cele .go:active{transform:scale(.98)}
+  .cele .sh{margin-top:9px;width:100%;background:none;border:none;font-family:inherit;font-size:.83rem;font-weight:600;color:var(--sage);cursor:pointer;padding:7px}
+  .toast{position:absolute;left:50%;bottom:30px;transform:translateX(-50%) translateY(18px);background:var(--ink);color:#fff;font-size:.8rem;font-weight:500;padding:11px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:all .3s;z-index:48;white-space:nowrap}
+  .toast.show{opacity:1;transform:translateX(-50%)}
+
+  .note{position:absolute;width:218px;z-index:5;opacity:0;transform:translateX(-6px);transition:opacity .4s,transform .4s;pointer-events:none}
+  .note.on{opacity:1;transform:none}
+  .note .nb{background:#fff;border:1px solid #E2D8C2;border-radius:14px;padding:13px 14px;box-shadow:0 8px 22px -12px rgba(120,90,40,.4)}
+  .note .tag{font-size:.64rem;font-weight:800;letter-spacing:.06em;color:var(--apricot-deep);text-transform:uppercase;margin-bottom:5px}
+  .note .tx{font-size:.78rem;line-height:1.5;color:#4a4332}.note .tx b{color:var(--pine)}
+  .note .how{margin-top:7px;font-size:.7rem;color:#9A8E76;line-height:1.45;border-top:1px dashed #EAE0CC;padding-top:6px}.note.l .how{text-align:right}
+  .note .line{position:absolute;top:22px;height:1.5px;background:repeating-linear-gradient(90deg,#C9A77A 0 5px,transparent 5px 9px)}
+  .note .line:after{content:"";position:absolute;width:7px;height:7px;border-top:1.5px solid #C9A77A;border-right:1.5px solid #C9A77A;top:-3px}
+  .note.r{right:0}.note.r .line{left:-46px;width:46px}.note.r .line:after{left:0;transform:rotate(-135deg)}
+  .note.l{left:0;text-align:right}.note.l .line{right:-46px;width:46px}.note.l .line:after{right:0;transform:rotate(45deg)}
+  .cap{position:absolute;left:10px;right:10px;bottom:16px;z-index:42;background:rgba(23,63,56,.96);color:#EAF2EE;border-radius:14px;padding:11px 14px;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;box-shadow:0 10px 24px -10px rgba(0,0,0,.55);display:none}
+  .cap.on{opacity:1;transform:none}
+  .cap .tag{font-size:.6rem;font-weight:800;letter-spacing:.06em;color:var(--apricot);text-transform:uppercase;margin-bottom:4px}
+  .cap .tx{font-size:.78rem;line-height:1.45;color:#EAF2EE}.cap .tx b{color:#fff}
+  .cap .how{margin-top:6px;font-size:.68rem;color:#A9C6BC;line-height:1.4;border-top:1px dashed rgba(255,255,255,.22);padding-top:5px}
+  .capx{position:absolute;top:58px;right:12px;z-index:46;width:34px;height:34px;border-radius:50%;border:none;background:rgba(23,63,56,.9);color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px -3px rgba(0,0,0,.4)}
+  .spot{position:absolute;left:14px;right:14px;z-index:44;background:rgba(255,250,247,.98);border:2px dashed var(--warn);border-radius:14px;padding:12px 14px;opacity:0;transform:translateY(6px) scale(.98);transition:all .25s;pointer-events:none;box-shadow:0 10px 26px -10px rgba(199,91,54,.5);cursor:pointer}
+  .spot.on{opacity:1;transform:none;pointer-events:auto}
+  .spot .sptag{font-size:.62rem;font-weight:800;letter-spacing:.06em;color:var(--warn);text-transform:uppercase;margin-bottom:4px}
+  .spot .sptx{font-size:.8rem;line-height:1.45;color:#3a2a22}.spot .sptx b{color:var(--pine)}
+  .spot .sphow{margin-top:6px;font-size:.69rem;color:#9a7a68;line-height:1.4;border-top:1px dashed rgba(199,91,54,.3);padding-top:5px}
+  .spot .spx{margin-top:7px;font-size:.64rem;font-weight:700;color:var(--warn);text-align:right}
+  .lead b{color:var(--pine)}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+  <div class="tbinner">
+    <div class="tbhead">
+      <div class="tbtitle">치과 임플란트 회복 관리 시나리오</div>
+      <div class="tbutils">
+        <button class="reset" onclick="shareDemo()">↗ 공유</button>
+        <button class="reset" onclick="showSetup()">↺ 처음으로</button>
+        <button class="reset" onclick="showContact()">ⓘ 도입 문의</button>
+      </div>
+    </div>
+    <div class="tbsub">수술 당일부터 2주까지, 환자가 받는 화면 그대로의 데모예요 · 다른 진료과·시술에도 똑같이 맞출 수 있어요</div>
+    <div class="navrow">
+      <span class="navlab">시나리오 단계</span>
+      <div class="prog" id="prog"></div>
+    </div>
+  </div>
+  </div>
+
+  <div class="stage" id="stage" data-screen="setup">
+
+    <div class="device">
+      <div class="frame">
+        <div class="swrap">
+          <div class="island"></div>
+          <span class="btn-l"></span><span class="btn-l2"></span><span class="btn-l3"></span><span class="btn-r"></span>
+
+          <!-- SETUP -->
+          <div class="view sview show" id="sview">
+            <div class="status"><span>9:41</span><span class="ico"><svg viewBox="0 0 18 12"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".35"/></svg><svg viewBox="0 0 16 12"><path d="M8 2.4c2.3 0 4.4.9 6 2.4l-1.4 1.5A6.6 6.6 0 0 0 8 4.5c-1.8 0-3.5.7-4.6 1.8L2 4.8C3.6 3.3 5.7 2.4 8 2.4zM8 6.6c1.2 0 2.3.5 3.1 1.3L8 11 4.9 7.9A4.4 4.4 0 0 1 8 6.6z"/></svg><span class="batt"><span class="cell"><i></i></span></span></span></div>
+            <div class="setup">
+              <span class="badge">회복 관리 페이지 · 데모</span>
+              <h1>시술 후, 환자가<br>매일 다시 찾는 우리 병원</h1>
+              <p class="lead">신규 환자 홍보용이 아니라 <b>시술 끝난 환자</b>를 위한 페이지입니다. 병원 카톡으로 매일 안부가 오고 → 환자가 상태를 남기면 → 원장님이 확인하고 답장합니다. 환자는 혼자 불안해하지 않고, 병원은 매일 챙기는 인상으로 재방문·소개까지 이어집니다. <b>아래에 원장님의 병원·이름을 적고, 환자 입장에서 직접 경험해 보세요.</b></p>
+              <div class="setpanel">
+                <div class="setpanel-h"><span class="gear">⚙</span> 데모 설정 <span class="setpanel-sub">우리 병원으로 맞춰보기</span></div>
+                <div class="fld"><label>병원 이름</label><input id="inClinic" maxlength="14" placeholder="예) 이음치과"></div>
+                <div class="fld"><label>원장 이름</label><input id="inDoctor" maxlength="10" placeholder="예) 김도윤"></div>
+              </div>
+              <p class="guide">↓ 입력하고 누르면 환자 화면으로 들어가요</p>
+              <button class="startbtn" onclick="startDemo()">이 설정으로 데모 시작 →</button>
+              <p class="note2">교육용 데모예요 · 실제 발송·진단은 하지 않아요<br><b>환자 회복 관리로 재방문·소개까지 잇는 서비스 · by VELNOC</b></p>
+            </div>
+          </div>
+
+          <!-- KAKAO -->
+          <div class="view kview" id="kview">
+            <div class="status"><span>9:41</span><span class="ico"><svg viewBox="0 0 18 12"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".35"/></svg><svg viewBox="0 0 16 12"><path d="M8 2.4c2.3 0 4.4.9 6 2.4l-1.4 1.5A6.6 6.6 0 0 0 8 4.5c-1.8 0-3.5.7-4.6 1.8L2 4.8C3.6 3.3 5.7 2.4 8 2.4zM8 6.6c1.2 0 2.3.5 3.1 1.3L8 11 4.9 7.9A4.4 4.4 0 0 1 8 6.6z"/></svg><span class="batt"><span class="cell"><i></i></span></span></span></div>
+            <div class="khead"><span class="bk">‹ 2</span><span class="ttl"><span class="nm"><span id="hdName">이음치과</span> <span class="v"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></span></span><span class="ph">0507-1424-3198 ⌄</span></span><span class="acts"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></span></div>
+            <div class="kbody" id="kbody"></div>
+          </div>
+
+          <!-- DIARY -->
+          <div class="view dview" id="dview">
+            <div class="status"><span>9:41</span><span class="ico"><svg viewBox="0 0 18 12"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".35"/></svg><svg viewBox="0 0 16 12"><path d="M8 2.4c2.3 0 4.4.9 6 2.4l-1.4 1.5A6.6 6.6 0 0 0 8 4.5c-1.8 0-3.5.7-4.6 1.8L2 4.8C3.6 3.3 5.7 2.4 8 2.4zM8 6.6c1.2 0 2.3.5 3.1 1.3L8 11 4.9 7.9A4.4 4.4 0 0 1 8 6.6z"/></svg><span class="batt"><span class="cell"><i></i></span></span></span></div>
+            <div class="kbar"><span class="x" onclick="showKakao(true)">✕</span><span class="kt"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg><span id="kbTitle">이음치과 회복관리</span></span><span class="km">⋮</span></div>
+            <div class="dwrap">
+              <div class="clinic"><div class="cmark"><svg viewBox="0 0 24 24"><path d="M12 2C7.5 2 4.5 5 4.5 9c0 3 .9 4.6 1.4 7.4.4 2.3 1 5.6 2.6 5.6 1.4 0 1.6-2.2 1.9-4.1.3-1.6.9-1.9 1.6-1.9s1.3.3 1.6 1.9c.3 1.9.5 4.1 1.9 4.1 1.6 0 2.2-3.3 2.6-5.6.5-2.8 1.4-4.4 1.4-7.4 0-4-3-7-7.5-7z"/></svg></div><span class="cname" id="cnName">이음치과</span><span class="dchip" id="dchip">실밥 제거 D-7</span></div>
+              <div id="dbody"></div>
+              <div class="foot"><span id="ftName">이음치과</span> 회복관리 · 데모 화면입니다 · by <b>VELNOC</b><br>교육용 데모예요 · 이상 증상은 바로 병원에 연락하세요</div>
+            </div>
+          </div>
+
+          <div class="veil" id="veil"><div class="cele"><div class="bt"><svg viewBox="0 0 24 24"><path class="tf" d="M12 2C7.5 2 4.5 5 4.5 9c0 3 .9 4.6 1.4 7.4.4 2.3 1 5.6 2.6 5.6 1.4 0 1.6-2.2 1.9-4.1.3-1.6.9-1.9 1.6-1.9s1.3.3 1.6 1.9c.3 1.9.5 4.1 1.9 4.1 1.6 0 2.2-3.3 2.6-5.6.5-2.8 1.4-4.4 1.4-7.4 0-4-3-7-7.5-7z"/></svg></div><h3 id="celeH"></h3><p class="m" id="celeM"></p><button class="go" id="celeGo" onclick="advanceFromCele()"></button><button class="sh" onclick="share()">소개하기</button></div></div>
+          <div class="kinput" id="kinput"><span class="plus">+</span><span class="ph2">메시지 입력</span></div>
+          <div class="toast" id="toast"></div>
+          <div class="spot" id="spot" onclick="dismissSpot()"></div>
+          <button class="capx" id="capx" onclick="toggleCap()" title="설명 표시/숨김">💡</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+var TOOTH='M12 2C7.5 2 4.5 5 4.5 9c0 3 .9 4.6 1.4 7.4.4 2.3 1 5.6 2.6 5.6 1.4 0 1.6-2.2 1.9-4.1.3-1.6.9-1.9 1.6-1.9s1.3.3 1.6 1.9c.3 1.9.5 4.1 1.9 4.1 1.6 0 2.2-3.3 2.6-5.6.5-2.8 1.4-4.4 1.4-7.4 0-4-3-7-7.5-7z';
+var setup={clinic:'이음치과',doctor:'김도윤',patient:'민지',age:'4050'};
+var tone='formal';
+var ageHintTxt={'2030':'20·30대 → <b>발랄한</b> 말투로 시작해요. (언제든 위에서 바꿀 수 있어요)','4050':'40·50대 → <b>다정한</b> 말투로 시작해요. (언제든 위에서 바꿀 수 있어요)','60':'60대 이상 → <b>정중한</b> 말투로 시작해요. (언제든 위에서 바꿀 수 있어요)'};
+var JOURNEY=[1,3,7,14], idx=0;
+var input={swelling:null,pain:4,bleeding:null}, doneRoutine=0, log=[];
+var dayPhase='knock', replyTimer=null;
+var annoOn=true, dismissed={}, curAnno=[], curView=null, annoUpdate=null, annoCleanup=null, lastBestKey=null;
+var submitted=false, submitWarn=false, celebrated=false;
+var DEV_CONTACT='도입·제작 문의 — 벨녹웍스(VELNOC) · 카카오톡 채널 @벨녹웍스';
+var ANNO={
+ kakao:[
+  {sel:'.kalim',tag:'도달',tx:'병원 <b>공식 카톡</b>으로 안내가 도착합니다.',how:'보낼 때마다 "우리 병원이 챙긴다"는 인상을 남깁니다'},
+  {sel:'.kgo',tag:'참여 유도',tx:'환자는 카카오톡에 온 메시지로 바로 확인합니다. <b>별도 회원가입이나 설치가 필요 없습니다.</b>',how:'마찰이 없어 매일 능동적으로 참여합니다 · 일방적 알림이 아닙니다'},
+  {sel:'.ksent',tag:'양방향 · 핵심',tx:'<b>환자가 남긴 상태</b>가 원장님께 전달됩니다. 환자는 "들어준다"는 안심을 얻습니다.',how:'기존 일방향 알림이 비운 자리 · 참여·확인이 남습니다'},
+  {sel:'.kreply',tag:'각인 · 케어',tx:'원장님이 확인하고 답장합니다. 환자는 <b>케어받는 느낌</b>, 병원은 <b>각인</b>됩니다.',how:'답장 멘트는 처음 한 번만 등록하면 자동 발송 · 원장 추가 업무 0'}
+ ],
+ diary:[
+  {sel:'.streak',tag:'재방문',tx:'기록이 쌓이고 <b>다음 날 또 톡</b>이 와서, 재방문일까지 이어집니다.',how:'병원은 자연스러운 <b>재방문·소개</b>로 연결됩니다'},
+  {sel:'.engine',tag:'자동 분류',tx:'입력에 따라 <b>안심/주의로 자동 분기</b>됩니다. 환자는 즉시 안심을 얻습니다.',how:'주의 신호만 통과 · 불필요한 전화는 거르고 필요한 것만 받습니다'}
+ ]
+};
+
+var DAY={
+ 1:{chip:'실밥 제거 D-7',alim:'📋 회복 일기 시작',sub:'오늘이 첫날입니다. 회복 상태를 간단히 기록해 주세요.'},
+ 3:{chip:'실밥 제거 D-4',alim:'📋 3일째 회복 체크',sub:'3일째입니다. 보통 이맘때 붓기가 가장 심한 편입니다.'},
+ 7:{chip:'실밥 제거일',alim:'✂️ 실밥 제거 안내',sub:'여기까지 잘 오셨습니다. 오늘도 상태를 간단히 기록해 주세요.'},
+ 14:{chip:'정기검진 D-166',alim:'🎓 회복 일기 졸업',sub:''}
+};
+
+var KNOCK={
+ formal:{
+  1:'안녕하세요, {P}.\n<span class="dr">{C} {D} 원장</span>입니다.\n\n오늘 임플란트 시술 잘 마치셨습니다. 고생 많으셨어요.\n\n시술보다 이후 2주가 더 중요합니다. 오늘부터 매일 회복 안내를 보내 드립니다. 그날그날 주의할 점과 관리법을 꼭 확인해 주시고, 오늘 상태도 간단히 기록해 주세요. 제가 직접 보고 답해 드리겠습니다.',
+  3:'{P}, 잘 지내고 계신가요?\n오늘로 3일째입니다.\n\n보통 2~3일째에 붓기가 가장 심한 편이에요. 너무 걱정 마세요.\n\n오늘 상태도 간단히 기록해 주시겠어요?',
+  7:'{P}, 오늘이 실밥 제거일입니다.\n여기까지 잘 오셨어요.\n\n내원 시간 잊지 마시고, 오늘 상태도 간단히 기록해 주시겠어요?',
+  14:'{P}, 2주 동안 하루도 빠지지 않으셨습니다.\n정말 잘 해내셨어요.\n\n이제 회복 일기는 마칩니다. 6개월 뒤 정기검진 때 다시 뵙겠습니다.'
+ },
+ warm:{
+  1:'안녕하세요, {P} 🙂\n<span class="dr">{C} {D} 원장</span>이에요.\n\n오늘 임플란트 잘 끝났어요. 고생 많았어요.\n\n시술보다 앞으로 2주가 더 중요해요. 오늘부터 매일 회복 안내를 보내 드릴게요. 그날그날 주의할 점과 관리법을 꼭 확인하시고, 오늘 상태도 간단히 기록해 주세요. 제가 직접 보고 답해 드릴게요.',
+  3:'{P}, 잘 지내고 있어요?\n오늘로 3일째예요.\n\n보통 2~3일째 붓기가 제일 심해요. 정상이니 걱정 말아요.\n\n오늘 상태도 간단히 남겨 줄래요?',
+  7:'{P}, 오늘 실밥 제거하는 날이에요.\n여기까지 잘 왔어요.\n\n내원 시간 잊지 말고, 오늘 상태도 간단히 남겨 줄래요?',
+  14:'{P}, 2주 동안 하루도 안 빠졌어요.\n정말 대단해요.\n\n이제 회복 일기는 졸업이에요. 6개월 뒤 정기검진 때 또 봬요.'
+ },
+ playful:{
+  1:'안녕하세요, {P}! 🎉\n<span class="dr">{C} {D} 원장</span>이에요.\n\n오늘 임플란트 잘 끝났어요. 진짜 고생했어요!\n\n시술보다 앞으로 2주가 더 중요해요. 오늘부터 매일 회복 안내를 보내드릴게요. 그날그날 주의할 점이랑 관리법 꼭 확인하고, 오늘 상태도 간단히 남겨줘요. 제가 직접 보고 답할게요!',
+  3:'{P}, 잘 지내고 있죠?\n오늘로 3일째예요!\n\n보통 2~3일째가 붓기 절정이에요. 걱정 NO!\n\n오늘도 간단히 남겨줘요.',
+  7:'{P}, 오늘 실밥 제거 날이에요! ✂️\n여기까지 진짜 잘 왔어요.\n\n내원 시간 잊지 말고, 오늘도 간단히 남겨줘요!',
+  14:'{P}, 2주 개근 성공! 🎉\n진짜 대단해요.\n\n회복 일기는 이제 졸업이에요 🎓\n6개월 뒤 정기검진 때 또 만나요!'
+ }
+};
+var BTN={formal:'오늘 회복 상태 남기기',warm:'오늘 회복 일기 쓰기',playful:'오늘 회복 일기 쓰기'};
+var BTN14='회복 일기 돌아보기';
+
+var DOC={
+ formal:{1:'오늘 시술 잘 견디셨습니다. 거즈는 잘 물고 계시고, 맵거나 뜨거운 음식만 피해 주세요.',3:'3일째면 붓기가 정점을 지나는 시기입니다. 잘 가고 있으니 너무 걱정 마세요.',7:'실밥까지 잘 오셨습니다. 이제 단단한 음식만 조금 더 조심해 주세요.'},
+ warm:{1:'오늘 막 끝났으니 이만하면 잘 견디셨어요. 거즈 잘 물고, 맵고 뜨거운 것만 피해 주세요.',3:'3일째 붓기는 거의 정점이에요. 여기서부터 빠지니까 걱정 말아요.',7:'실밥까지 잘 왔어요. 이제 단단한 음식만 조금 더 조심해요.'},
+ playful:{1:'오늘 첫날인데 잘 버텼어요 💪 거즈 꼭 물고, 맵고 뜨거운 건 잠깐 안녕!',3:'3일째 붓기는 거의 끝판! 이제 빠질 일만 남았어요 😊',7:'실밥 제거까지 완주! 🎉 단단한 음식만 조금 더 조심해요.'}
+};
+var GREET={
+ formal:{
+  1:'{P},<br>오늘 정말 고생 많으셨습니다',
+  3:'{P},<br>고비를 잘 지나고 계십니다',
+  7:'{P}, 벌써<br>실밥 제거날입니다'
+ },
+ warm:{
+  1:'{P}, 오늘<br>정말 고생 많았어요',
+  3:'{P}, 지금<br>고비를 잘 지나고 있어요',
+  7:'{P}, 벌써<br>실밥 제거날이에요'
+ },
+ playful:{
+  1:'{P}, 오늘<br>진짜 고생했어요 💪',
+  3:'{P}, 고비<br>잘 넘기고 있어요 🦷',
+  7:'{P}, 벌써<br>실밥 제거날이에요 ✂️'
+ }
+};
+var CELE_M={formal:'꾸준히 살펴 주신 덕분에 회복이 순조롭습니다.<br>내일도 톡으로 안내드리겠습니다.',warm:'이렇게 꾸준히 하시면 회복도 빨라요.<br>내일 또 톡으로 알려드릴게요.',playful:'이 페이스면 회복도 금방이에요!<br>내일 또 톡 보낼게요 😊'};
+
+var SAFE={
+  okTitle:'✓ 이 시기엔 흔한 경과입니다',
+  okBody:{1:'시술 당일 붓기와 약간의 출혈은 흔히 나타나는 편입니다.',3:'2~3일째 붓기는 정점을 지나는 시기입니다. 이제 차차 빠지는 편입니다.',7:'실밥 제거 즈음 통증·붓기가 가라앉았다면 대체로 순조로운 편입니다.'},
+  okTail:' 최종 판단은 병원에서 — 조금이라도 걱정되면 바로 연락하세요.',
+  warnTitle:'⚠ 직접 확인이 필요합니다',
+  warnBody:'붓기가 더 심해지거나 통증이 7 이상, 출혈이 계속되는 것은 점검이 필요한 신호입니다. 혼자 판단하지 마시고 지금 연락 주세요.',
+  callBtn:'원장님께 바로 연락 →',
+  micro:{formal:'붓기·통증·출혈만 골라 주시면, 지금 상태가 어떤 경과인지 바로 알려드리겠습니다.',warm:'붓기·통증·출혈만 골라 주면, 지금 상태가 어떤 경과인지 바로 알려드리겠습니다.',playful:'붓기·통증·출혈만 콕 골라주면, 지금 상태가 어떤 경과인지 바로 알려줘요.'}
+};
+
+/* ---------- helpers ---------- */
+function pad(n){return (n<10?'0':'')+n;}
+function clock24(d){return d.getHours()+':'+pad(d.getMinutes());}
+function clockKakao(d){var h=d.getHours(),ap=h<12?'오전':'오후',h12=h%12||12;return ap+' '+h12+':'+pad(d.getMinutes());}
+function updateClock(){var t=clock24(new Date());document.querySelectorAll('.status').forEach(function(s){var sp=s.querySelector('span');if(sp)sp.textContent=t;});}
+function hon(){return tone==='playful'?'님':' 님';}
+function pname(){return setup.patient+hon();}
+function inj(s){return s.split('{P}').join(pname()).split('{D}').join(setup.doctor).split('{C}').join(setup.clinic);}
+function curDay(){return JOURNEY[idx];}
+
+function applyNames(){var s=function(id,t){var e=document.getElementById(id);if(e)e.textContent=t;};s('hdName',setup.clinic);s('cnName',setup.clinic);s('kbTitle',setup.clinic+' 회복관리');s('ftName',setup.clinic);}
+function syncTone(){document.querySelectorAll('.toneset button').forEach(function(b){b.classList.toggle('on',b.dataset.tone===tone);});}
+function renderProg(){
+  var p=document.getElementById('prog'),labels={1:'1일차',3:'3일차',7:'7일차',14:'완료'},h='';
+  JOURNEY.forEach(function(d,i){h+='<button class="'+(i===idx?'on':'')+'" onclick="jumpTo('+i+')">'+labels[d]+'</button>';});
+  p.innerHTML=h;
+}
+
+/* ---------- setup ---------- */
+function pickAge(a){setup.age=a;document.querySelectorAll('#agewrap button').forEach(function(b){b.classList.toggle('on',b.dataset.age===a);});document.getElementById('ageHint').innerHTML=ageHintTxt[a];}
+function startDemo(){
+  setup.clinic=(document.getElementById('inClinic').value||'').trim()||'이음치과';
+  setup.doctor=(document.getElementById('inDoctor').value||'').trim()||'김도윤';
+  tone='formal';
+  idx=0; log=[]; resetDay(); applyNames(); renderProg();
+  showKakao();
+}
+function showSetup(){
+  ['kview','dview'].forEach(function(id){document.getElementById(id).classList.remove('show');});
+  document.getElementById('kinput').style.display='none';
+  document.getElementById('sview').classList.add('show');
+  document.getElementById('stage').dataset.screen='setup';
+  clearNotes();
+  document.getElementById('inClinic').value=setup.clinic;
+  document.getElementById('inDoctor').value=setup.doctor;
+}
+
+/* ---------- nav ---------- */
+function setScreen(s){document.getElementById('stage').dataset.screen=s;}
+function clearNotes(){if(annoCleanup){annoCleanup();annoCleanup=null;}var sp=document.getElementById('spot');if(sp)sp.classList.remove('on');}
+function resetDay(){input={swelling:null,pain:4,bleeding:null};doneRoutine=0;submitted=false;submitWarn=false;celebrated=false;dayPhase='knock';if(replyTimer){clearTimeout(replyTimer);replyTimer=null;}}
+function jumpTo(i){idx=i;resetDay();renderProg();showKakao();}
+function advance(){ if(idx<JOURNEY.length-1){idx++;resetDay();renderProg();showKakao();} }
+function advanceFromCele(){document.getElementById('veil').classList.remove('show');advance();}
+
+function showKakao(instant){
+  ['sview','dview'].forEach(function(id){document.getElementById(id).classList.remove('show');});
+  var k=document.getElementById('kview');k.classList.add('show');k.scrollTop=0;
+  document.getElementById('kinput').style.display='flex';
+  setScreen('kakao');renderThread(instant);
+}
+function showDiary(){
+  ['sview','kview'].forEach(function(id){document.getElementById(id).classList.remove('show');});
+  document.getElementById('kinput').style.display='none';
+  var d=document.getElementById('dview');d.classList.add('show');d.scrollTop=0;
+  setScreen('diary');renderDiary();
+  attachAnno('diary');
+}
+
+function attachAnno(screen){
+  if(annoCleanup){annoCleanup();annoCleanup=null;}
+  curAnno=ANNO[screen]||[]; lastBestKey=null;
+  curView=document.getElementById(screen==='kakao'?'kview':'dview');
+  function update(forceFirst){
+    var spot=document.getElementById('spot'), swEl=document.querySelector('.swrap');
+    if(!spot||!swEl)return;
+    if(!annoOn){spot.classList.remove('on');return;}
+    var sw=swEl.getBoundingClientRect(), vc=(sw.top+sw.bottom)/2, best=null, bd=1e9, bestRect=null;
+    function inBand(c){return c>sw.top+40 && c<sw.bottom-80;}
+    if(forceFirst){
+      for(var i=0;i<curAnno.length;i++){
+        var a0=curAnno[i];if(dismissed[screen+a0.sel])continue;
+        var e0=curView.querySelector(a0.sel);if(!e0)continue;
+        var r0=e0.getBoundingClientRect();if(r0.height===0)continue;
+        if(inBand(r0.top+r0.height/2)){best=a0;bestRect=r0;break;}
+      }
+    }
+    if(!best)curAnno.forEach(function(a){
+      if(dismissed[screen+a.sel])return;
+      var el=curView.querySelector(a.sel);if(!el)return;
+      var r=el.getBoundingClientRect();if(r.height===0)return;
+      var c=r.top+r.height/2;
+      if(inBand(c)){var d=Math.abs(c-vc);if(d<bd){bd=d;best=a;bestRect=r;}}
+    });
+    var bestKey=best?screen+best.sel:null;
+    if(bestKey!==lastBestKey){ if(lastBestKey)dismissed[lastBestKey]=true; lastBestKey=bestKey; }
+    if(best){
+      spot.dataset.key=screen+best.sel;
+      spot.innerHTML='<div class="sptag">'+best.tag+'</div><div class="sptx">'+best.tx+'</div><div class="sphow">'+best.how+'</div><div class="spx">탭하면 닫혀요 ✕</div>';
+      spot.style.top=Math.max(58,Math.min(bestRect.top-sw.top, sw.height-160))+'px';
+      spot.classList.add('on');
+    }else spot.classList.remove('on');
+  }
+  annoUpdate=update;
+  curView.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  setTimeout(function(){update(true);},60);
+  annoCleanup=function(){curView.removeEventListener('scroll',update);window.removeEventListener('scroll',update);window.removeEventListener('resize',update);var sp=document.getElementById('spot');if(sp)sp.classList.remove('on');};
+}
+function dismissSpot(){var sp=document.getElementById('spot');if(sp&&sp.dataset.key){dismissed[sp.dataset.key]=true;lastBestKey=null;sp.classList.remove('on');}}
+
+/* ---------- kakao thread ---------- */
+function patientBubbleText(){return (tone==='formal'?'오늘 상태 보내드려요.\n':'오늘 상태 보내요!\n')+stateLabel();}
+function replyCard(day,warn){
+  var t=clockKakao(new Date()),alim,body,action;
+  if(warn){
+    alim='⚠ 원장님 확인';
+    body='방금 남겨주신 상태, 바로 확인했습니다.\n\n'+SAFE.warnBody+'\n\n지금 병원으로 연락 주시기 바랍니다.';
+    action='<div class="kgo" style="color:#C75B36;border-bottom:1px solid #eef0f2" onclick="toast(\'데모예요 · 실제 버전은 병원 카톡·전화로 바로 연결\')">'+SAFE.callBtn+'</div><div class="kgo" onclick="advance()">다음 날 받아보기 →</div>';
+  }else{
+    alim='💬 '+setup.doctor+' 원장 답장';
+    body='방금 남겨주신 상태, 확인했습니다.\n\n'+SAFE.okBody[day]+' 최종 판단은 병원에서 도와드리겠습니다.\n\n<span class="dr">'+DOC[tone][day]+'\n— '+setup.doctor+' 원장</span>';
+    action='<div class="kgo" onclick="showDiary()">'+(idx>=JOURNEY.length-2?'관리 마무리하기':'관리 루틴 이어서 하기')+' →</div>';
+  }
+  return '<div class="kcard kreply"><div class="kalim">'+alim+'</div><div class="ktext">'+body+'</div>'+action+'</div><span class="ktime">'+t+'</span>';
+}
+function clinicRow(inner){return '<div class="krow in"><div class="kava"><svg viewBox="0 0 24 24"><path d="'+TOOTH+'"/></svg></div><div class="kmid"><div class="kname">'+setup.clinic+'</div><div class="bub">'+inner+'</div></div></div>';}
+function scrollKbottom(){var k=document.getElementById('kview');if(!k)return;[40,260,600].forEach(function(d){setTimeout(function(){k.scrollTop=k.scrollHeight;},d);});}
+
+function renderThread(instant){
+  var day=curDay(), m=DAY[day], b=document.getElementById('kbody');
+  var dateLbl=(idx===0?'오늘':'다음 날');
+  if(dayPhase==='knock'){
+    var txt=inj(KNOCK[tone][day]), btn=(day===14?BTN14:BTN[tone]);
+    b.innerHTML='<div class="kdate">'+dateLbl+'</div><div class="krow" id="krow"><div class="kava"><svg viewBox="0 0 24 24"><path d="'+TOOTH+'"/></svg></div><div class="kmid"><div class="kname">'+setup.clinic+'</div><div class="bub">'+(instant?'':'<div class="kcard"><div class="ktyping"><span></span><span></span><span></span></div></div>')+'</div></div></div>';
+    var row=document.getElementById('krow');
+    function injectKnock(){document.querySelector('#kbody .bub').innerHTML='<div class="kcard"><div class="kalim">'+m.alim+'</div><div class="ktext">'+txt+'</div><div class="kgo" onclick="showDiary()">'+btn+' →</div></div><span class="ktime">'+clockKakao(new Date())+'</span>';attachAnno('kakao');}
+    if(instant){row.classList.add('in');injectKnock();}
+    else{setTimeout(function(){row.classList.add('in');},60);setTimeout(injectKnock,1050);}
+    return;
+  }
+  // sent / replied
+  var txt=inj(KNOCK[tone][day]);
+  var knock=clinicRow('<div class="kcard"><div class="kalim">'+m.alim+'</div><div class="ktext">'+txt+'</div></div>');
+  var sent='<div class="ksent"><div class="bw"><span class="tm">'+clockKakao(new Date())+'</span><div class="b">'+patientBubbleText()+'</div></div></div>';
+  var tip='<div class="knote"><span class="pill2">⏱ 시연용이라 답장이 바로 와요 · 실제 서비스에선 원장 확인 후 텀을 두고 자동 발송돼요</span></div>';
+  var tail;
+  if(dayPhase==='sent'){
+    tail=clinicRow('<div class="kcard"><div class="ktyping"><span></span><span></span><span></span></div></div>')+'<button class="pullbtn" onclick="deliverReply()">답장 미리 받기 →</button>';
+  }else{
+    tail=clinicRow(replyCard(day,submitWarn));
+  }
+  b.innerHTML='<div class="kdate">'+dateLbl+'</div>'+knock+sent+tip+tail;
+  scrollKbottom();attachAnno('kakao');
+}
+function deliverReply(){
+  if(dayPhase!=='sent')return;
+  if(replyTimer){clearTimeout(replyTimer);replyTimer=null;}
+  dayPhase='replied';renderThread(true);
+}
+
+/* ---------- diary ---------- */
+function greetHTML(day){return '<section class="greet rise"><h1>'+inj(GREET[tone][day])+'</h1><p class="gsub">'+DAY[day].sub+'</p></section>';}
+function streakHTML(){return '<section class="streak rise" style="animation-delay:.08s"><div class="srow" id="srow"></div><p class="slabel" id="slabel"></p></section>';}
+function qHTML(){return '<div class="q"><div class="qlab">붓기는요?</div><div class="qhint">보통 2~3일째 가장 붓고, 4일째부터 빠지는 것이 일반적입니다.</div><div class="pills">'+pill('swelling','down','빠지는 중','4일째~ 보통')+pill('swelling','same','그대로','2~3일째 절정')+pill('swelling','up','더 심해짐','계속 커져요',1)+'</div></div>'+
+  '<div class="q"><div class="qlab">통증은 0~10 중에?</div><div class="srange"><input type="range" min="0" max="10" value="4" id="pain" oninput="onPain(this.value)"><span class="pv" id="pv">4</span></div><div class="qhint pain" id="painHint">'+painHintTxt(4).t+'</div></div>'+
+  '<div class="q"><div class="qlab">출혈은요?</div><div class="qhint">수술 1~2일은 침에 약간 섞일 수 있으며, 보통 3~4일이면 멎습니다.</div><div class="pills">'+pill('bleeding','none','없음','멎었어요')+pill('bleeding','little','조금','침에 약간')+pill('bleeding','lots','계속 나요','안 멎어요',1)+'</div></div>';}
+function timelineHTML(){return '<div class="timeline rise" style="animation-delay:.24s" id="timeline"></div>';}
+function tasksHTML(){return task('처방약 끝까지 복용','괜찮아진 것 같아도, 항생제는 남기지 않기')+task('금연 · 금주','임플란트 실패 원인 1위 · 오늘 하루만 더')+task('시술 부위 건드리지 않기','혀가 자꾸 가도 오늘만 꾹 참아요');}
+
+function renderDiary(){
+  var day=curDay();
+  document.getElementById('dchip').textContent=DAY[day].chip;
+  var h=document.getElementById('dbody');
+  if(day===14){h.innerHTML=gradView();return;}
+  if(dayPhase==='replied') renderDiaryRoutine(day,h);
+  else renderDiarySymptom(day,h);
+}
+function renderDiarySymptom(day,h){
+  submitted=false;submitWarn=false;celebrated=false;doneRoutine=0;
+  h.innerHTML=greetHTML(day)+streakHTML()+
+    '<section class="engine rise" style="animation-delay:.14s"><h2>① 오늘 상태는 어때요?</h2><div class="micro">'+SAFE.micro[tone]+'</div>'+qHTML()+
+      '<button class="sub" id="sub" disabled onclick="submit()">원장님께 오늘 상태 보내기 →</button></section>'+
+    '<div class="lockednote rise" style="animation-delay:.2s">상태를 보내면, <b>'+setup.doctor+' 원장님 답장</b>이 카톡으로 오고 → <b>② 관리 루틴</b>이 이어집니다.</div>'+
+    timelineHTML();
+  renderTeeth(false);renderTimeline();
+}
+function renderDiaryRoutine(day,h){
+  doneRoutine=0;celebrated=false;
+  var nextLabel=(idx>=JOURNEY.length-2)?'졸업 보기 →':'다음 날 받아보기 →';
+  h.innerHTML=greetHTML(day)+streakHTML()+
+    '<div class="donecard rise"><div class="hd">✓ 오늘 상태 전송 완료 · 원장님 답장 받음</div><div class="s">'+stateLabel()+'</div></div>'+
+    '<div class="rhead rise" style="animation-delay:.16s"><h3>② 오늘의 관리 루틴</h3><span class="cnt"><strong id="rc">0</strong> / 3</span></div>'+
+    tasksHTML()+
+    '<div class="nextwrap" id="nextwrap"><button class="nextbtn" onclick="advance()">'+nextLabel+'</button></div>'+
+    timelineHTML();
+  renderTeeth(true);renderTimeline();
+  document.querySelectorAll('.task').forEach(function(el){el.onclick=function(){toggleTask(el);};});
+}
+function pill(k,v,t,s,w){return '<button class="pill" onclick="pick(\''+k+'\',\''+v+'\',this,'+(w?1:0)+')"><span class="pt">'+t+'</span><span class="ps">'+s+'</span></button>';}
+function task(t,s){return '<div class="task"><div class="bx"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tx"><b>'+t+'</b><span>'+s+'</span></div></div>';}
+
+function renderTeeth(fillToday){
+  var row=document.getElementById('srow');if(!row)return;
+  var names=['1','2','3','4','5','6','7'],filled=log.length,html='';
+  for(var i=0;i<7;i++){var cls=i<filled?'tdone':(i===filled?(fillToday?'tdone':'ttoday'):'tempty');
+    html+='<div class="tday '+cls+'"><svg viewBox="0 0 24 24"><path class="tf" d="'+TOOTH+'"/></svg><span class="d">'+names[i]+'</span></div>';}
+  row.innerHTML=html;
+  var lab=document.getElementById('slabel'),day=curDay();
+  lab.innerHTML=fillToday?'회복 '+day+'일째 기록 완료 · <strong>잘 하고 계십니다</strong>':'회복 '+day+'일째 · <strong>오늘 상태</strong>를 남겨 주시기 바랍니다';
+}
+function renderTimeline(){
+  var el=document.getElementById('timeline');if(!el)return;
+  if(log.length===0){el.innerHTML='<h3>지나온 날들</h3><div class="empty">오늘부터 기록이 한 줄씩 쌓여요.</div>';return;}
+  var h='<h3>지나온 날들</h3>';
+  log.forEach(function(e){h+='<div class="entry"><div class="ed">'+e.day+'일째</div><div class="es">'+e.state+'</div><div class="ec">"'+e.comment+'"</div></div>';});
+  el.innerHTML=h;
+}
+
+/* ---------- engine ---------- */
+function pick(k,v,el,w){input[k]=v;var p=el.parentElement;p.querySelectorAll('.pill').forEach(function(x){x.classList.remove('sel','wp');});el.classList.add('sel');if(w)el.classList.add('wp');ready();}
+function painHintTxt(v){v=+v;
+  if(v===0)return{t:'통증이 거의 없습니다.',w:false};
+  if(v<=2)return{t:'약한 통증입니다. 진통제 없이도 견딜 만한 정도입니다.',w:false};
+  if(v<=4)return{t:'가벼운~중간 통증입니다. 진통제로 조절되면 이 시기엔 흔합니다.',w:false};
+  if(v<=6)return{t:'중간 통증입니다. 진통제로 견딜 만하지만, 줄어드는지 지켜봐 주십시오.',w:false};
+  if(v<=8)return{t:'강한 통증입니다. 진통제로도 잘 잡히지 않으면 병원 확인을 권해 드립니다.',w:true};
+  return{t:'매우 강한 통증입니다. 지금 바로 병원에 연락 주시기 바랍니다.',w:true};
+}
+function onPain(v){input.pain=+v;document.getElementById('pv').textContent=v;
+  var h=painHintTxt(v),el=document.getElementById('painHint');
+  if(el){el.textContent=h.t;el.className='qhint pain'+(h.w?' warn':'');}
+  ready();}
+function ready(){document.getElementById('sub').disabled=!(input.swelling&&input.bleeding);}
+function stateLabel(){var s={down:'붓기 빠지는 중',same:'붓기 그대로',up:'붓기 심해짐'}[input.swelling];var b={none:'출혈 없음',little:'약간 출혈',lots:'출혈 계속'}[input.bleeding];return s+' · 통증 '+input.pain+' · '+b;}
+
+function submit(){
+  var day=curDay();
+  var warn=(input.swelling==='up')||(input.pain>=7)||(input.bleeding==='lots');
+  submitted=true;submitWarn=warn;
+  var comment=warn?'직접 점검이 필요한 신호였어요. 연락 주셔서 다행이에요.':DOC[tone][day];
+  log.push({day:day,state:stateLabel(),comment:comment});
+  dayPhase='sent';
+  showKakao(true);
+  if(replyTimer)clearTimeout(replyTimer);
+  replyTimer=setTimeout(deliverReply, warn?500:1600);
+}
+function maybeComplete(){
+  if(submitted && !submitWarn && doneRoutine>=3 && !celebrated){celebrated=true;var nw=document.getElementById('nextwrap');if(nw)nw.classList.add('show');setTimeout(openCele,450);}
+}
+
+function toggleTask(el){if(el.classList.contains('done'))return;el.classList.add('done');doneRoutine++;document.getElementById('rc').textContent=doneRoutine;maybeComplete();}
+
+/* ---------- celebration ---------- */
+function openCele(){
+  var day=curDay(),last=(idx>=JOURNEY.length-2);
+  document.getElementById('celeH').innerHTML='회복 '+day+'일째 '+(tone==='formal'?'기록 완료':'완료!')+(tone==='playful'?' 🎉':'');
+  document.getElementById('celeM').innerHTML=CELE_M[tone];
+  document.getElementById('celeGo').textContent=last?'졸업 보기 →':'다음 날 받아보기 →';
+  document.getElementById('veil').classList.add('show');
+}
+function share(){document.getElementById('veil').classList.remove('show');toast('초대 링크가 복사됐어요 (데모)');}
+
+/* ---------- graduation ---------- */
+function gradView(){
+  var h='<div class="grad rise"><div class="cap" style="position:static;display:block;opacity:1;background:none;box-shadow:none;padding:0;font-size:1.9rem">🎓</div><h2>2주 회복 일기, '+(tone==='formal'?'완료':'졸업')+'</h2><p>하루도 빠지지 않았어요. 그 기록이 그대로 '+pname()+'의 회복 과정이에요.</p></div>';
+  h+='<div class="timeline rise" style="animation-delay:.08s"><h3>그동안의 일기</h3>';
+  if(log.length===0){h+='<div class="empty">아직 기록이 없어요. 처음부터 다시 진행해보세요.</div>';}
+  else{log.forEach(function(e){h+='<div class="entry"><div class="ed">'+e.day+'일째</div><div class="es">'+e.state+'</div><div class="ec">"'+e.comment+'"</div></div>';});}
+  h+='</div><button class="restartbtn" onclick="restart()">처음부터 다시 보기 ↺</button>';
+  return h;
+}
+function attachGradBtn(){}
+function restart(){idx=0;log=[];resetDay();renderProg();showKakao();}
+
+/* ---------- tone / cap / toast ---------- */
+function setTone(t){tone=t;syncTone();var sc=document.getElementById('stage').dataset.screen;if(sc==='kakao')showKakao(true);else if(sc==='diary'){input={swelling:null,pain:4,bleeding:null};doneRoutine=0;showDiary();}}
+function toggleCap(){annoOn=!annoOn;document.getElementById('capx').textContent=annoOn?'💡':'💬';if(annoOn){dismissed={};}else{var sp=document.getElementById('spot');if(sp)sp.classList.remove('on');}if(annoUpdate)annoUpdate();}
+function showContact(){toast(DEV_CONTACT);}
+function shareDemo(){
+  var url=location.href, data={title:'환자 회복 관리 데모 · VELNOC',text:'시술 후 환자가 매일 받는 회복 관리 화면 데모예요',url:url};
+  if(navigator.share){navigator.share(data).catch(function(){});}
+  else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){toast('데모 링크가 복사됐어요');}).catch(function(){toast('주소창의 URL을 복사해 공유해 주세요');});}
+  else{toast('주소창의 URL을 복사해 공유해 주세요');}
+}
+var tt;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show');},2300);}
+
+updateClock();setInterval(updateClock,20000);
+applyNames();syncTone();renderProg();
+</script>
+</body>
+</html>
