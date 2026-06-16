@@ -13,7 +13,7 @@
   :root{
     --porcelain:#F5F8F6;--ink:#173F38;--pine:#1E4D45;--sage:#6B7E79;
     --apricot:#E8946A;--apricot-deep:#D97E52;--card:#FFFFFF;--line:#DFE8E4;
-    --tooth-empty:#E3EBE7;--kbg:#A2B6CC;--kyellow:#FCE25A;--kink:#1B1B1B;
+    --tooth-empty:#E3EBE7;--kbg:#B2C6E8;--kyellow:#FCE25A;--kink:#1B1B1B;
     --ok:#2F7A5E;--ok-bg:#E7F3ED;--warn:#C75B36;--warn-bg:#FBEDE6;--stage-bg:#EDE7DA;
     --patient-bg:#E7EDF1;--patient-card:#FFFFFF;--patient-line:#DBE3E9;
   }
@@ -25,7 +25,18 @@
   .tbinner{max-width:560px;margin:0 auto;padding:12px 16px 11px}
   .tbhead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
   .tbtitle{font-family:'Gowun Batang',serif;font-size:1rem;font-weight:700;color:var(--ink);line-height:1.3}
-  .tbutils{display:flex;gap:3px;flex:0 0 auto}
+  .tbutils{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+  .reset{font-family:inherit;font-size:.7rem;font-weight:700;color:#8A7F68;background:none;border:none;cursor:pointer;white-space:nowrap;padding:5px 3px}
+  .tbtn{font-family:inherit;font-size:.72rem;font-weight:700;color:#6B6149;background:#fff;border:1px solid #DDD3BE;border-radius:99px;padding:6px 13px;cursor:pointer;white-space:nowrap;transition:transform .12s}
+  .tbtn:active{transform:scale(.96)}
+  .tbtn-cta{background:var(--pine);border-color:var(--pine);color:#fff}
+  .tbdiv{width:1px;height:18px;background:#DDD3BE;flex:0 0 auto;margin:0 1px}
+  .tbtoggle{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #DDD3BE;border-radius:99px;padding:5px 11px 5px 11px;font-family:inherit;font-size:.72rem;font-weight:700;color:#9A8E76;cursor:pointer;white-space:nowrap}
+  .tbtoggle .sw{position:relative;width:26px;height:15px;border-radius:99px;background:#CFC6B0;transition:background .18s;flex:0 0 auto}
+  .tbtoggle .sw:after{content:"";position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:#fff;transition:transform .18s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+  .tbtoggle.on{color:var(--pine);border-color:var(--pine)}
+  .tbtoggle.on .sw{background:var(--pine)}
+  .tbtoggle.on .sw:after{transform:translateX(11px)}
   .tbsub{margin-top:5px;font-size:.7rem;color:#9A8E76;line-height:1.45}
   .navrow{display:flex;align-items:center;gap:8px;margin-top:11px}
   .navlab{font-size:.62rem;font-weight:700;letter-spacing:.04em;color:#9A8E76;white-space:nowrap}
@@ -41,6 +52,10 @@
 
   .stage{position:relative;max-width:880px;margin:0 auto;padding:8px 0 70px;display:flex;justify-content:center}
   .device{position:relative;width:392px;flex:0 0 auto;z-index:2}
+  .demonext{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;white-space:nowrap;background:var(--ink);color:#fff;border:none;border-radius:99px;padding:13px 24px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;box-shadow:0 10px 26px -6px rgba(20,40,36,.6)}
+  .demonext[hidden]{display:none}
+  .demonext:active{transform:translateX(-50%) scale(.97)}
+  .kreply .ktext{padding-bottom:15px}
   .frame{background:linear-gradient(150deg,#3a3f47,#1a1d22 55%,#2c3037);border-radius:60px;padding:12px;box-shadow:0 0 0 2px #4a4f57,0 1px 0 2px rgba(255,255,255,.06) inset,0 34px 70px -24px rgba(30,50,46,.55),0 10px 24px -12px rgba(0,0,0,.4)}
   .swrap{position:relative;border-radius:48px;overflow:hidden;background:#000;height:812px;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",system-ui,"Malgun Gothic",sans-serif}
   .island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:116px;height:33px;background:#000;border-radius:20px;z-index:40}
@@ -100,7 +115,7 @@
   .khead .ttl .nm{font-size:.94rem;font-weight:700;display:flex;align-items:center;gap:4px;justify-content:center}
   .khead .ttl .nm .v{width:15px;height:15px;border-radius:50%;background:#3d6df0;display:inline-flex;align-items:center;justify-content:center}
   .khead .ttl .nm .v svg{width:9px;height:9px;fill:#fff}
-  .khead .ttl .ph{display:block;font-size:.72rem;color:#46505a;font-weight:500;margin-top:3px;letter-spacing:.01em}
+  .khead .ttl .ph{display:block;font-size:.72rem;color:#46505a;font-weight:500;margin-top:3px;letter-spacing:.01em;cursor:pointer}
   .khead .acts{flex:1;display:flex;gap:14px;justify-content:flex-end}
   .khead .acts svg{width:21px;height:21px;stroke:#23292e;stroke-width:2;fill:none}
   .kbody{padding:8px 12px 96px}
@@ -109,23 +124,30 @@
   .krow.in{opacity:1;transform:none}
   .kava{width:36px;height:36px;border-radius:13px;background:var(--pine);flex:0 0 auto;display:flex;align-items:center;justify-content:center;margin-top:2px}
   .kava svg{width:19px;height:19px;fill:#fff}
-  .kmid{max-width:80%}
-  .kname{font-size:.72rem;color:#33404b;margin:0 0 5px 3px}
-  .krow .bub{display:flex;align-items:flex-end;gap:6px}
-  .kcard{background:#fff;border-radius:3px 16px 16px 16px;overflow:hidden;box-shadow:0 1px 1.5px rgba(20,40,60,.14)}
+  .kmid{max-width:86%}
+  .kname{font-size:.72rem;color:#3a455c;margin:0 0 5px 3px}
+  .krow .bub{display:block;min-width:0}
+  .bubrow{display:flex;align-items:center;gap:7px}
+  .kside{flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+  .kshare{width:33px;height:33px;border-radius:50%;background:rgba(255,255,255,.55);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .kshare:active{background:rgba(255,255,255,.85)}
+  .kshare svg{width:16px;height:16px;stroke:#4a5568;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .kcard{background:#fff;border-radius:4px 15px 15px 15px;overflow:hidden;box-shadow:0 1px 1.5px rgba(20,40,60,.12)}
   .kalim{background:var(--kyellow);font-weight:700;font-size:.8rem;padding:11px 15px;color:#3a2f00;display:flex;align-items:center;gap:7px}
-  .ktext{padding:14px 16px 8px;font-size:.85rem;line-height:1.65;color:#1f1f1f;white-space:pre-line}
-  .ktext .dr{font-weight:700;color:var(--pine)}
-  .kgo{border-top:1px solid #eef0f2;padding:14px;text-align:center;font-size:.86rem;font-weight:700;color:#2b6a5a;cursor:pointer}
-  .kgo:active{background:#fafafa}
-  .ktime{font-size:.62rem;color:#3f4d59;white-space:nowrap;padding-bottom:2px}
+  .ktext{padding:14px 16px 12px;font-size:.85rem;line-height:1.65;color:#1f1f1f;white-space:pre-line}
+  .ktext .dr{font-weight:inherit;color:inherit}
+  .kgo,.klink{border-top:1px solid #ECEEF0;padding:13px;text-align:center;font-size:.85rem;font-weight:600;color:#4b4b4b;background:#F6F7F8;cursor:pointer}
+  .kgo:active,.klink:active{background:#EEF0F2}
+  .kmeta{margin:6px 0 14px 3px;display:flex;flex-direction:column;gap:2px}
+  .kmetarow{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:7px 3px 16px 3px}
+  .kfoot{font-size:.66rem;color:#52617e}
+  .ktime{font-size:.62rem;color:#52617e;white-space:nowrap}
   .ktyping{display:flex;gap:4px;padding:15px 17px}
   .ktyping span{width:7px;height:7px;border-radius:50%;background:#C4CDD6;animation:bob 1s infinite}
   .ktyping span:nth-child(2){animation-delay:.15s}.ktyping span:nth-child(3){animation-delay:.3s}
   @keyframes bob{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
-  .kinput{position:absolute;bottom:0;left:0;right:0;z-index:35;background:#fff;display:none;align-items:center;gap:10px;padding:11px 15px 20px;border-top:1px solid #f0f0f0}
-  .kinput .plus{width:24px;height:24px;border-radius:50%;border:2px solid #c2c2c2;color:#b5b5b5;display:flex;align-items:center;justify-content:center;font-size:1rem;flex:0 0 auto}
-  .kinput .ph2{flex:1;color:#b3b3b3;font-size:.86rem}
+  .kinput{position:absolute;bottom:0;left:0;right:0;z-index:35;background:#33363D;color:#fff;display:none;align-items:center;justify-content:center;gap:7px;padding:17px 15px 26px;font-weight:600;font-size:.92rem}
+  .kinput .chev{font-size:.8em;opacity:.9}
   .ksent{display:flex;justify-content:flex-end;margin:0 2px 12px}
   .ksent .bw{display:flex;align-items:flex-end;gap:6px}
   .ksent .b{max-width:80%;background:var(--kyellow);color:#1b1b1b;font-size:.85rem;line-height:1.5;border-radius:16px 4px 16px 16px;padding:11px 14px;white-space:pre-line;box-shadow:0 1px 1.5px rgba(20,40,60,.14)}
@@ -218,6 +240,17 @@
   .foot{margin-top:30px;text-align:center;font-size:.68rem;color:var(--sage);line-height:1.7}.foot b{color:var(--pine)}
   .grad{margin-top:8px;background:linear-gradient(135deg,#1E4D45,#173F38);color:#EAF2EE;border-radius:20px;padding:26px 22px;text-align:center}
   .grad .cap{font-size:1.9rem}.grad h2{font-size:1.3rem;font-weight:700;margin-top:6px}.grad p{font-size:.85rem;line-height:1.6;color:#BFD4CC;margin-top:9px}
+  .gsheet{margin-top:8px;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 12px 34px -18px rgba(20,40,36,.35)}
+  .gsheet-top{background:linear-gradient(160deg,#23564D,#173F38);color:#fff;padding:22px 20px 19px;text-align:center}
+  .gsheet-top .gclinic{font-size:.72rem;font-weight:700;letter-spacing:.05em;color:#CFE3DC}
+  .gsheet-top .gtitle{font-size:1.16rem;font-weight:800;margin-top:6px;letter-spacing:-.01em}
+  .gsheet-top .gsub{font-size:.76rem;color:#B6CEC6;margin-top:6px}
+  .nextvisit{padding:19px 20px;text-align:center;border-bottom:1px solid #EEF1EF;background:#F4F8F6}
+  .nextvisit .nv-lab{font-size:.7rem;font-weight:800;color:var(--apricot-deep);letter-spacing:.06em}
+  .nextvisit .nv-date{font-size:1.5rem;font-weight:800;color:var(--ink);margin-top:7px;letter-spacing:-.01em}
+  .nextvisit .nv-dday{display:inline-block;margin-top:9px;background:var(--pine);color:#fff;font-size:.76rem;font-weight:800;border-radius:99px;padding:4px 14px}
+  .grec{padding:17px 19px 6px}
+  .grec-h{font-size:.8rem;font-weight:800;color:var(--pine);margin-bottom:12px}
   .restartbtn{margin-top:18px;width:100%;background:#fff;color:var(--pine);font-family:inherit;font-weight:700;font-size:.88rem;border:none;border-radius:13px;padding:13px;cursor:pointer}
 
   .veil{position:absolute;inset:0;background:rgba(23,63,56,.45);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .35s;z-index:45}
@@ -226,10 +259,18 @@
   .veil.show .cele{transform:none}
   .cele .bt{width:60px;height:60px;margin:0 auto 4px}.cele .bt .tf{fill:var(--apricot);stroke:var(--apricot-deep);stroke-width:1.4}
   .cele h3{font-size:1.22rem;font-weight:700;margin-top:6px}.cele h3 strong{color:var(--apricot-deep)}
-  .cele .m{margin-top:9px;font-size:.86rem;color:var(--sage);line-height:1.6}
+  .cele .m{margin-top:9px;font-size:.86rem;color:var(--sage);line-height:1.6;word-break:keep-all}
   .cele .go{margin-top:20px;width:100%;background:var(--pine);color:#fff;border:none;border-radius:13px;padding:14px;font-size:.92rem;font-weight:700;font-family:inherit;cursor:pointer}
+  .cele .go.warn{background:var(--warn)}
   .cele .go:active{transform:scale(.98)}
   .cele .sh{margin-top:9px;width:100%;background:none;border:none;font-family:inherit;font-size:.83rem;font-weight:600;color:var(--sage);cursor:pointer;padding:7px}
+  .cele .celenote{margin-top:12px;font-size:.66rem;color:#A8B5B0;line-height:1.5;word-break:keep-all}
+  .cele .ctitle{font-size:1.18rem;font-weight:800;color:var(--ink)}
+  .cele .cmsg{font-size:.84rem;color:var(--sage);line-height:1.55;margin-top:9px;word-break:keep-all}
+  .cbtn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;border-radius:13px;padding:14px;font-family:inherit;font-size:.9rem;font-weight:700;text-decoration:none;margin-top:11px;cursor:pointer;box-sizing:border-box}
+  .cbtn-call{background:var(--pine);color:#fff}
+  .cbtn-kakao{background:#FAE100;color:#3a2f00}
+  .cclose{margin-top:12px;width:100%;background:none;border:none;font-family:inherit;font-size:.83rem;font-weight:600;color:var(--sage);cursor:pointer;padding:6px}
   .toast{position:absolute;left:50%;bottom:30px;transform:translateX(-50%) translateY(18px);background:var(--ink);color:#fff;font-size:.8rem;font-weight:500;padding:11px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:all .3s;z-index:48;white-space:nowrap}
   .toast.show{opacity:1;transform:translateX(-50%)}
 
@@ -266,9 +307,11 @@
     <div class="tbhead">
       <div class="tbtitle">치과 임플란트 회복 관리 시나리오</div>
       <div class="tbutils">
-        <button class="reset" onclick="shareDemo()">↗ 공유</button>
-        <button class="reset" onclick="showSetup()">↺ 처음으로</button>
-        <button class="reset" onclick="showContact()">ⓘ 도입 문의</button>
+        <button class="tbtn tbtn-cta" onclick="showContact()">도입 문의</button>
+        <button class="tbtn" onclick="shareDemo()">공유</button>
+        <button class="tbtn" onclick="showSetup()">처음으로</button>
+        <span class="tbdiv"></span>
+        <button class="tbtoggle on" id="capx" onclick="toggleCap()" aria-pressed="true"><span class="tbtog-lab">설명</span><span class="sw"></span></button>
       </div>
     </div>
     <div class="tbsub">수술 당일부터 2주까지, 환자가 받는 화면 그대로의 데모예요 · 다른 진료과·시술에도 똑같이 맞출 수 있어요</div>
@@ -308,7 +351,7 @@
           <!-- KAKAO -->
           <div class="view kview" id="kview">
             <div class="status"><span>9:41</span><span class="ico"><svg viewBox="0 0 18 12"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".35"/></svg><svg viewBox="0 0 16 12"><path d="M8 2.4c2.3 0 4.4.9 6 2.4l-1.4 1.5A6.6 6.6 0 0 0 8 4.5c-1.8 0-3.5.7-4.6 1.8L2 4.8C3.6 3.3 5.7 2.4 8 2.4zM8 6.6c1.2 0 2.3.5 3.1 1.3L8 11 4.9 7.9A4.4 4.4 0 0 1 8 6.6z"/></svg><span class="batt"><span class="cell"><i></i></span></span></span></div>
-            <div class="khead"><span class="bk">‹ 2</span><span class="ttl"><span class="nm"><span id="hdName">이음치과</span> <span class="v"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></span></span><span class="ph">0507-1424-3198 ⌄</span></span><span class="acts"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></span></div>
+            <div class="khead"><span class="bk">‹ 2</span><span class="ttl"><span class="nm"><span id="hdName">이음치과</span> <span class="v"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></span></span><span class="ph" onclick="location.href='tel:0507-1326-1691'">0507-1326-1691 ⌄</span></span><span class="acts"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></span></div>
             <div class="kbody" id="kbody"></div>
           </div>
 
@@ -323,14 +366,15 @@
             </div>
           </div>
 
-          <div class="veil" id="veil"><div class="cele"><div class="bt"><svg viewBox="0 0 24 24"><path class="tf" d="M12 2C7.5 2 4.5 5 4.5 9c0 3 .9 4.6 1.4 7.4.4 2.3 1 5.6 2.6 5.6 1.4 0 1.6-2.2 1.9-4.1.3-1.6.9-1.9 1.6-1.9s1.3.3 1.6 1.9c.3 1.9.5 4.1 1.9 4.1 1.6 0 2.2-3.3 2.6-5.6.5-2.8 1.4-4.4 1.4-7.4 0-4-3-7-7.5-7z"/></svg></div><h3 id="celeH"></h3><p class="m" id="celeM"></p><button class="go" id="celeGo" onclick="advanceFromCele()"></button><button class="sh" onclick="share()">소개하기</button></div></div>
-          <div class="kinput" id="kinput"><span class="plus">+</span><span class="ph2">메시지 입력</span></div>
+          <div class="veil" id="veil"><div class="cele"><div class="bt"><svg viewBox="0 0 24 24"><path class="tf" d="M12 2C7.5 2 4.5 5 4.5 9c0 3 .9 4.6 1.4 7.4.4 2.3 1 5.6 2.6 5.6 1.4 0 1.6-2.2 1.9-4.1.3-1.6.9-1.9 1.6-1.9s1.3.3 1.6 1.9c.3 1.9.5 4.1 1.9 4.1 1.6 0 2.2-3.3 2.6-5.6.5-2.8 1.4-4.4 1.4-7.4 0-4-3-7-7.5-7z"/></svg></div><h3 id="celeH"></h3><p class="m" id="celeM"></p><button class="go" id="celeGo" onclick="advanceFromCele()"></button><button class="sh" onclick="share()">친구에게 소개하기</button><p class="celenote">실제 환자는 내일 이 시간에 카톡으로 다음 안내를 자동으로 받아요 · 위 버튼은 데모를 넘기는 용도예요</p></div></div>
+          <div class="veil" id="contactVeil"><div class="cele"><div class="ctitle">벨녹웍스에 도입 문의</div><p class="cmsg">환자 회복 관리, 우리 병원에도 — 편한 방법으로 연락 주세요.</p><a class="cbtn cbtn-call" href="tel:0507-1326-1691">📞 전화 · 0507-1326-1691</a><a class="cbtn cbtn-kakao" href="https://pf.kakao.com/_JDbbX/chat" target="_blank" rel="noopener">💬 카카오톡 채널 문의</a><button class="cclose" onclick="closeContact()">닫기</button></div></div>
+          <div class="kinput" id="kinput">채널 메뉴 <span class="chev">⌄</span></div>
           <div class="toast" id="toast"></div>
           <div class="spot" id="spot" onclick="dismissSpot()"></div>
-          <button class="capx" id="capx" onclick="toggleCap()" title="설명 표시/숨김">💡</button>
 
         </div>
       </div>
+      <button class="demonext" id="demonext" onclick="advance()" hidden></button>
     </div>
   </div>
 
@@ -346,16 +390,30 @@ var annoOn=true, dismissed={}, curAnno=[], curView=null, annoUpdate=null, annoCl
 var submitted=false, submitWarn=false, celebrated=false;
 var DEV_CONTACT='도입·제작 문의 — 벨녹웍스(VELNOC) · 카카오톡 채널 @벨녹웍스';
 var ANNO={
- kakao:[
-  {sel:'.kalim',tag:'도달',tx:'병원 <b>공식 카톡</b>으로 안내가 도착합니다.',how:'보낼 때마다 "우리 병원이 챙긴다"는 인상을 남깁니다'},
-  {sel:'.kgo',tag:'참여 유도',tx:'환자는 카카오톡에 온 메시지로 바로 확인합니다. <b>별도 회원가입이나 설치가 필요 없습니다.</b>',how:'마찰이 없어 매일 능동적으로 참여합니다 · 일방적 알림이 아닙니다'},
-  {sel:'.ksent',tag:'양방향 · 핵심',tx:'<b>환자가 남긴 상태</b>가 원장님께 전달됩니다. 환자는 "들어준다"는 안심을 얻습니다.',how:'기존 일방향 알림이 비운 자리 · 참여·확인이 남습니다'},
-  {sel:'.kreply',tag:'각인 · 케어',tx:'원장님이 확인하고 답장합니다. 환자는 <b>케어받는 느낌</b>, 병원은 <b>각인</b>됩니다.',how:'답장 멘트는 처음 한 번만 등록하면 자동 발송 · 원장 추가 업무 0'}
- ],
- diary:[
-  {sel:'.streak',tag:'재방문',tx:'기록이 쌓이고 <b>다음 날 또 톡</b>이 와서, 재방문일까지 이어집니다.',how:'병원은 자연스러운 <b>재방문·소개</b>로 연결됩니다'},
-  {sel:'.engine',tag:'자동 분류',tx:'입력에 따라 <b>안심/주의로 자동 분기</b>됩니다. 환자는 즉시 안심을 얻습니다.',how:'주의 신호만 통과 · 불필요한 전화는 거르고 필요한 것만 받습니다'}
- ]
+ kakao:{
+  1:[
+   {sel:'.kalim',tag:'도달',tx:'병원 <b>공식 카톡</b>으로 안내가 도착합니다.',how:'보낼 때마다 "우리 병원이 챙긴다"는 인상을 남깁니다'},
+   {sel:'.kgo',tag:'참여 유도',tx:'환자는 카카오톡 안내를 <b>탭 한 번</b>으로 열어 기록합니다. 별도 회원가입·설치가 없습니다.',how:'일방적 알림이 아니라 환자가 직접 기록하고 원장이 답합니다 · 마찰이 없어 매일 참여합니다'}
+  ],
+  3:[
+   {sel:'.kalim',tag:'꾸준한 방문',tx:'매일 같은 시간에 안내가 도착해 <b>방문이 습관</b>이 됩니다.',how:'회복 기간 내내 이탈 없이 이어집니다 · 자연스러운 재방문·소개로 연결됩니다'}
+  ],
+  7:[
+   {sel:'.kalim',tag:'데이터 누적',tx:'매일의 기록이 <b>차곡차곡 쌓입니다</b>. 원장님은 환자의 회복 추이를 한눈에 봅니다.',how:'쌓인 기록이 재진·정기검진 안내의 근거가 됩니다'}
+  ]
+ },
+ diary:{
+  1:[
+   {sel:'.streak',tag:'재방문',tx:'기록이 쌓이고 <b>다음 날 또 톡</b>이 와서, 재방문일까지 이어집니다.',how:'병원은 자연스러운 <b>재방문·소개</b>로 연결됩니다'},
+   {sel:'.engine',tag:'자동 분류',tx:'입력에 따라 <b>안심/주의로 자동 분기</b>됩니다. 원장님은 주의 신호만 확인하면 됩니다.',how:'주의 신호만 통과 · 불필요한 전화는 거르고 필요한 것만 받습니다'}
+  ],
+  3:[
+   {sel:'.greet',tag:'단계 맞춤',tx:'같은 폼이 아닙니다. <b>회복 단계에 맞춰 안내가 바뀝니다.</b> 3일째엔 "붓기가 가장 심한 때"라고 먼저 짚어 줍니다.',how:'환자가 "내 상태를 안다"고 느낍니다 · 불안할 타이밍에 안심 기준을 제시합니다'}
+  ],
+  7:[
+   {sel:'.greet',tag:'단계 맞춤',tx:'<b>실밥 제거일</b>에 맞춰 안내가 또 바뀝니다. "단단한 음식 주의"처럼 그날 필요한 것만 전합니다.',how:'매일 똑같은 잔소리가 아니라 · 회복 막바지엔 막바지에 맞는 안내입니다'}
+  ]
+ }
 };
 
 var DAY={
@@ -426,6 +484,11 @@ var SAFE={
 function pad(n){return (n<10?'0':'')+n;}
 function clock24(d){return d.getHours()+':'+pad(d.getMinutes());}
 function clockKakao(d){var h=d.getHours(),ap=h<12?'오전':'오후',h12=h%12||12;return ap+' '+h12+':'+pad(d.getMinutes());}
+var WEEK=['일','월','화','수','목','금','토'];
+function dayDate(day){var d=new Date();d.setDate(d.getDate()+(day-1));return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+WEEK[d.getDay()]+'요일';}
+function checkupDate(){var d=new Date();d.setMonth(d.getMonth()+6);return d;}
+function checkupLabel(){var d=checkupDate();return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+WEEK[d.getDay()]+'요일';}
+function checkupDDay(){var grad=new Date();grad.setDate(grad.getDate()+13);var c=checkupDate();return Math.round((c-grad)/86400000);}
 function updateClock(){var t=clock24(new Date());document.querySelectorAll('.status').forEach(function(s){var sp=s.querySelector('span');if(sp)sp.textContent=t;});}
 function hon(){return tone==='playful'?'님':' 님';}
 function pname(){return setup.patient+hon();}
@@ -435,7 +498,7 @@ function curDay(){return JOURNEY[idx];}
 function applyNames(){var s=function(id,t){var e=document.getElementById(id);if(e)e.textContent=t;};s('hdName',setup.clinic);s('cnName',setup.clinic);s('kbTitle',setup.clinic+' 회복관리');s('ftName',setup.clinic);}
 function syncTone(){document.querySelectorAll('.toneset button').forEach(function(b){b.classList.toggle('on',b.dataset.tone===tone);});}
 function renderProg(){
-  var p=document.getElementById('prog'),labels={1:'1일차',3:'3일차',7:'7일차',14:'완료'},h='';
+  var p=document.getElementById('prog'),labels={1:'1일차',3:'3일차',7:'7일차',14:'졸업'},h='';
   JOURNEY.forEach(function(d,i){h+='<button class="'+(i===idx?'on':'')+'" onclick="jumpTo('+i+')">'+labels[d]+'</button>';});
   p.innerHTML=h;
 }
@@ -452,6 +515,7 @@ function startDemo(){
 function showSetup(){
   ['kview','dview'].forEach(function(id){document.getElementById(id).classList.remove('show');});
   document.getElementById('kinput').style.display='none';
+  hideDemoNext();
   document.getElementById('sview').classList.add('show');
   document.getElementById('stage').dataset.screen='setup';
   clearNotes();
@@ -476,6 +540,7 @@ function showKakao(instant){
 function showDiary(){
   ['sview','kview'].forEach(function(id){document.getElementById(id).classList.remove('show');});
   document.getElementById('kinput').style.display='none';
+  hideDemoNext();
   var d=document.getElementById('dview');d.classList.add('show');d.scrollTop=0;
   setScreen('diary');renderDiary();
   attachAnno('diary');
@@ -483,7 +548,8 @@ function showDiary(){
 
 function attachAnno(screen){
   if(annoCleanup){annoCleanup();annoCleanup=null;}
-  curAnno=ANNO[screen]||[]; lastBestKey=null;
+  curAnno=(screen==='kakao'?(ANNO.kakao[curDay()]||[]):(ANNO.diary[curDay()]||[])); lastBestKey=null;
+  var kp=screen+curDay()+'_';
   curView=document.getElementById(screen==='kakao'?'kview':'dview');
   function update(forceFirst){
     var spot=document.getElementById('spot'), swEl=document.querySelector('.swrap');
@@ -493,27 +559,29 @@ function attachAnno(screen){
     function inBand(c){return c>sw.top+40 && c<sw.bottom-80;}
     if(forceFirst){
       for(var i=0;i<curAnno.length;i++){
-        var a0=curAnno[i];if(dismissed[screen+a0.sel])continue;
+        var a0=curAnno[i];if(dismissed[kp+a0.sel])continue;
         var e0=curView.querySelector(a0.sel);if(!e0)continue;
         var r0=e0.getBoundingClientRect();if(r0.height===0)continue;
         if(inBand(r0.top+r0.height/2)){best=a0;bestRect=r0;break;}
       }
     }
     if(!best)curAnno.forEach(function(a){
-      if(dismissed[screen+a.sel])return;
+      if(dismissed[kp+a.sel])return;
       var el=curView.querySelector(a.sel);if(!el)return;
       var r=el.getBoundingClientRect();if(r.height===0)return;
       var c=r.top+r.height/2;
       if(inBand(c)){var d=Math.abs(c-vc);if(d<bd){bd=d;best=a;bestRect=r;}}
     });
-    var bestKey=best?screen+best.sel:null;
-    if(bestKey!==lastBestKey){ if(lastBestKey)dismissed[lastBestKey]=true; lastBestKey=bestKey; }
+    var bestKey=best?kp+best.sel:null;
     if(best){
-      spot.dataset.key=screen+best.sel;
-      spot.innerHTML='<div class="sptag">'+best.tag+'</div><div class="sptx">'+best.tx+'</div><div class="sphow">'+best.how+'</div><div class="spx">탭하면 닫혀요 ✕</div>';
+      if(spot.dataset.key!==bestKey){
+        spot.dataset.key=bestKey;
+        spot.innerHTML='<div class="sptag">'+best.tag+'</div><div class="sptx">'+best.tx+'</div><div class="sphow">'+best.how+'</div><div class="spx">탭하면 닫혀요 ✕</div>';
+      }
       spot.style.top=Math.max(58,Math.min(bestRect.top-sw.top, sw.height-160))+'px';
       spot.classList.add('on');
     }else spot.classList.remove('on');
+    lastBestKey=bestKey;
   }
   annoUpdate=update;
   curView.addEventListener('scroll',update,{passive:true});
@@ -525,53 +593,63 @@ function attachAnno(screen){
 function dismissSpot(){var sp=document.getElementById('spot');if(sp&&sp.dataset.key){dismissed[sp.dataset.key]=true;lastBestKey=null;sp.classList.remove('on');}}
 
 /* ---------- kakao thread ---------- */
-function patientBubbleText(){return (tone==='formal'?'오늘 상태 보내드려요.\n':'오늘 상태 보내요!\n')+stateLabel();}
+function patientBubbleText(){return '오늘 관리 3가지 마쳤어요.\n'+stateLabel();}
+function nextStepLabel(){var nd=JOURNEY[idx+1];return nd===14?'마지막 · 완료 화면 보기 ▶':'다음 단계 · '+nd+'일차 보기 ▶';}
+function kmetaHTML(){return '<div class="kmeta"><span class="kfoot">수신거부 | 홈 &gt; 채널차단</span><span class="ktime">'+clockKakao(new Date())+'</span></div>';}
 function replyCard(day,warn){
-  var t=clockKakao(new Date()),alim,body,action;
+  var alim,body,action;
   if(warn){
-    alim='⚠ 원장님 확인';
-    body='방금 남겨주신 상태, 바로 확인했습니다.\n\n'+SAFE.warnBody+'\n\n지금 병원으로 연락 주시기 바랍니다.';
-    action='<div class="kgo" style="color:#C75B36;border-bottom:1px solid #eef0f2" onclick="toast(\'데모예요 · 실제 버전은 병원 카톡·전화로 바로 연결\')">'+SAFE.callBtn+'</div><div class="kgo" onclick="advance()">다음 날 받아보기 →</div>';
+    alim='⚠ '+setup.doctor+' 원장';
+    body='방금 보내주신 기록, 바로 확인했습니다.\n\n'+SAFE.warnBody+'\n\n지금 병원으로 연락 주시기 바랍니다.';
+    action='<div class="klink" style="color:#C75B36" onclick="location.href=\'tel:0507-1326-1691\'">'+SAFE.callBtn+'</div>';
   }else{
     alim='💬 '+setup.doctor+' 원장 답장';
-    body='방금 남겨주신 상태, 확인했습니다.\n\n'+SAFE.okBody[day]+' 최종 판단은 병원에서 도와드리겠습니다.\n\n<span class="dr">'+DOC[tone][day]+'\n— '+setup.doctor+' 원장</span>';
-    action='<div class="kgo" onclick="showDiary()">'+(idx>=JOURNEY.length-2?'관리 마무리하기':'관리 루틴 이어서 하기')+' →</div>';
+    var tail=(day>=7)?'남은 회복도 곁에서 챙기겠습니다.':'내일 이 시간에 또 연락드리겠습니다.';
+    body='방금 보내주신 기록, 확인했습니다.\n\n'+DOC[tone][day]+'\n\n'+tail+'\n— '+setup.doctor+' 원장';
+    action='';
   }
-  return '<div class="kcard kreply"><div class="kalim">'+alim+'</div><div class="ktext">'+body+'</div>'+action+'</div><span class="ktime">'+t+'</span>';
+  return '<div class="kcard kreply"><div class="kalim">'+alim+'</div><div class="ktext">'+body+'</div>'+action+'</div>';
 }
-function clinicRow(inner){return '<div class="krow in"><div class="kava"><svg viewBox="0 0 24 24"><path d="'+TOOTH+'"/></svg></div><div class="kmid"><div class="kname">'+setup.clinic+'</div><div class="bub">'+inner+'</div></div></div>';}
+function kmetaHTML(){return '';}
+var SHARE_SVG='<svg viewBox="0 0 24 24"><path d="M12 15V3m0 0L8 7m4-4 4 4"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/></svg>';
+function rowInner(card){
+  var t=clockKakao(new Date());
+  return '<div class="kava"><svg viewBox="0 0 24 24"><path d="'+TOOTH+'"/></svg></div>'+
+    '<div class="kmid"><div class="kname">'+setup.clinic+'</div>'+
+      '<div class="bubrow"><div class="bub">'+card+'</div>'+
+        '<div class="kside"><button class="kshare" onclick="share()" aria-label="공유">'+SHARE_SVG+'</button></div></div>'+
+      '<div class="kmetarow"><span class="kfoot">수신거부 | 홈 &gt; 채널 차단</span><span class="ktime">'+t+'</span></div></div>';
+}
+function clinicRow(card){return '<div class="krow in">'+rowInner(card)+'</div>';}
 function scrollKbottom(){var k=document.getElementById('kview');if(!k)return;[40,260,600].forEach(function(d){setTimeout(function(){k.scrollTop=k.scrollHeight;},d);});}
 
+function showDemoNext(){var d=document.getElementById('demonext');if(!d)return;d.textContent=nextStepLabel();d.hidden=false;}
+function hideDemoNext(){var d=document.getElementById('demonext');if(d)d.hidden=true;}
 function renderThread(instant){
+  hideDemoNext();
   var day=curDay(), m=DAY[day], b=document.getElementById('kbody');
-  var dateLbl=(idx===0?'오늘':'다음 날');
+  var dateLbl=(idx===0?'오늘 · '+dayDate(day):dayDate(day)), knockTxt=inj(KNOCK[tone][day]);
   if(dayPhase==='knock'){
-    var txt=inj(KNOCK[tone][day]), btn=(day===14?BTN14:BTN[tone]);
+    var btn=(day===14?BTN14:BTN[tone]);
+    var knockCard='<div class="kcard"><div class="kalim">'+m.alim+'</div><div class="ktext">'+knockTxt+'</div><div class="kgo" onclick="showDiary()">'+btn+' →</div></div>';
     b.innerHTML='<div class="kdate">'+dateLbl+'</div><div class="krow" id="krow"><div class="kava"><svg viewBox="0 0 24 24"><path d="'+TOOTH+'"/></svg></div><div class="kmid"><div class="kname">'+setup.clinic+'</div><div class="bub">'+(instant?'':'<div class="kcard"><div class="ktyping"><span></span><span></span><span></span></div></div>')+'</div></div></div>';
     var row=document.getElementById('krow');
-    function injectKnock(){document.querySelector('#kbody .bub').innerHTML='<div class="kcard"><div class="kalim">'+m.alim+'</div><div class="ktext">'+txt+'</div><div class="kgo" onclick="showDiary()">'+btn+' →</div></div><span class="ktime">'+clockKakao(new Date())+'</span>';attachAnno('kakao');}
+    function injectKnock(){var r=document.getElementById('krow');if(!r)return;r.innerHTML=rowInner(knockCard);attachAnno('kakao');}
     if(instant){row.classList.add('in');injectKnock();}
     else{setTimeout(function(){row.classList.add('in');},60);setTimeout(injectKnock,1050);}
     return;
   }
-  // sent / replied
-  var txt=inj(KNOCK[tone][day]);
-  var knock=clinicRow('<div class="kcard"><div class="kalim">'+m.alim+'</div><div class="ktext">'+txt+'</div></div>');
-  var sent='<div class="ksent"><div class="bw"><span class="tm">'+clockKakao(new Date())+'</span><div class="b">'+patientBubbleText()+'</div></div></div>';
-  var tip='<div class="knote"><span class="pill2">⏱ 시연용이라 답장이 바로 와요 · 실제 서비스에선 원장 확인 후 텀을 두고 자동 발송돼요</span></div>';
-  var tail;
-  if(dayPhase==='sent'){
-    tail=clinicRow('<div class="kcard"><div class="ktyping"><span></span><span></span><span></span></div></div>')+'<button class="pullbtn" onclick="deliverReply()">답장 미리 받기 →</button>';
-  }else{
-    tail=clinicRow(replyCard(day,submitWarn));
+  // replied: knock (history, static) + 원장 답장
+  var knock=clinicRow('<div class="kcard"><div class="kalim">'+m.alim+'</div><div class="ktext">'+knockTxt+'</div></div>');
+  b.innerHTML='<div class="kdate">'+dateLbl+'</div>'+knock+'<div id="replyslot"></div>';
+  function injectReply(){var s=document.getElementById('replyslot');if(!s||dayPhase!=='replied')return;s.innerHTML=clinicRow(replyCard(day,submitWarn))+'<div class="knote"><span class="pill2">⏱ 시연용이라 답장이 바로 와요 · 실제 서비스에선 원장 확인 후 자동 발송돼요</span></div>';scrollKbottom();attachAnno('kakao');showDemoNext();}
+  if(instant){injectReply();}
+  else{
+    document.getElementById('replyslot').innerHTML=clinicRow('<div class="kcard"><div class="ktyping"><span></span><span></span><span></span></div></div>');
+    scrollKbottom();
+    if(replyTimer)clearTimeout(replyTimer);
+    replyTimer=setTimeout(injectReply,1300);
   }
-  b.innerHTML='<div class="kdate">'+dateLbl+'</div>'+knock+sent+tip+tail;
-  scrollKbottom();attachAnno('kakao');
-}
-function deliverReply(){
-  if(dayPhase!=='sent')return;
-  if(replyTimer){clearTimeout(replyTimer);replyTimer=null;}
-  dayPhase='replied';renderThread(true);
 }
 
 /* ---------- diary ---------- */
@@ -585,31 +663,17 @@ function tasksHTML(){return task('처방약 끝까지 복용','괜찮아진 것 
 
 function renderDiary(){
   var day=curDay();
-  document.getElementById('dchip').textContent=DAY[day].chip;
+  document.getElementById('dchip').textContent=(day===14?'정기검진 D-'+checkupDDay():DAY[day].chip);
   var h=document.getElementById('dbody');
   if(day===14){h.innerHTML=gradView();return;}
-  if(dayPhase==='replied') renderDiaryRoutine(day,h);
-  else renderDiarySymptom(day,h);
-}
-function renderDiarySymptom(day,h){
   submitted=false;submitWarn=false;celebrated=false;doneRoutine=0;
   h.innerHTML=greetHTML(day)+streakHTML()+
-    '<section class="engine rise" style="animation-delay:.14s"><h2>① 오늘 상태는 어때요?</h2><div class="micro">'+SAFE.micro[tone]+'</div>'+qHTML()+
-      '<button class="sub" id="sub" disabled onclick="submit()">원장님께 오늘 상태 보내기 →</button></section>'+
-    '<div class="lockednote rise" style="animation-delay:.2s">상태를 보내면, <b>'+setup.doctor+' 원장님 답장</b>이 카톡으로 오고 → <b>② 관리 루틴</b>이 이어집니다.</div>'+
+    '<div class="rhead rise" style="animation-delay:.12s"><h3>① 오늘의 관리 루틴</h3><span class="cnt"><strong id="rc">0</strong> / 3</span></div>'+
+    tasksHTML()+
+    '<section class="engine rise" style="animation-delay:.18s"><h2>② 오늘 상태 기록</h2><div class="micro">'+SAFE.micro[tone]+'</div>'+qHTML()+
+      '<button class="sub" id="sub" disabled onclick="submit()">원장님께 오늘 기록 보내기 →</button></section>'+
     timelineHTML();
   renderTeeth(false);renderTimeline();
-}
-function renderDiaryRoutine(day,h){
-  doneRoutine=0;celebrated=false;
-  var nextLabel=(idx>=JOURNEY.length-2)?'졸업 보기 →':'다음 날 받아보기 →';
-  h.innerHTML=greetHTML(day)+streakHTML()+
-    '<div class="donecard rise"><div class="hd">✓ 오늘 상태 전송 완료 · 원장님 답장 받음</div><div class="s">'+stateLabel()+'</div></div>'+
-    '<div class="rhead rise" style="animation-delay:.16s"><h3>② 오늘의 관리 루틴</h3><span class="cnt"><strong id="rc">0</strong> / 3</span></div>'+
-    tasksHTML()+
-    '<div class="nextwrap" id="nextwrap"><button class="nextbtn" onclick="advance()">'+nextLabel+'</button></div>'+
-    timelineHTML();
-  renderTeeth(true);renderTimeline();
   document.querySelectorAll('.task').forEach(function(el){el.onclick=function(){toggleTask(el);};});
 }
 function pill(k,v,t,s,w){return '<button class="pill" onclick="pick(\''+k+'\',\''+v+'\',this,'+(w?1:0)+')"><span class="pt">'+t+'</span><span class="ps">'+s+'</span></button>';}
@@ -617,8 +681,8 @@ function task(t,s){return '<div class="task"><div class="bx"><svg viewBox="0 0 2
 
 function renderTeeth(fillToday){
   var row=document.getElementById('srow');if(!row)return;
-  var names=['1','2','3','4','5','6','7'],filled=log.length,html='';
-  for(var i=0;i<7;i++){var cls=i<filled?'tdone':(i===filled?(fillToday?'tdone':'ttoday'):'tempty');
+  var names=['1','2','3','4','5','6','7'],todayIdx=curDay()-1,html='';
+  for(var i=0;i<7;i++){var cls=i<todayIdx?'tdone':(i===todayIdx?(fillToday?'tdone':'ttoday'):'tempty');
     html+='<div class="tday '+cls+'"><svg viewBox="0 0 24 24"><path class="tf" d="'+TOOTH+'"/></svg><span class="d">'+names[i]+'</span></div>';}
   row.innerHTML=html;
   var lab=document.getElementById('slabel'),day=curDay();
@@ -646,7 +710,7 @@ function onPain(v){input.pain=+v;document.getElementById('pv').textContent=v;
   var h=painHintTxt(v),el=document.getElementById('painHint');
   if(el){el.textContent=h.t;el.className='qhint pain'+(h.w?' warn':'');}
   ready();}
-function ready(){document.getElementById('sub').disabled=!(input.swelling&&input.bleeding);}
+function ready(){var b=document.getElementById('sub');if(b)b.disabled=!(doneRoutine>=3 && input.swelling && input.bleeding);}
 function stateLabel(){var s={down:'붓기 빠지는 중',same:'붓기 그대로',up:'붓기 심해짐'}[input.swelling];var b={none:'출혈 없음',little:'약간 출혈',lots:'출혈 계속'}[input.bleeding];return s+' · 통증 '+input.pain+' · '+b;}
 
 function submit(){
@@ -655,34 +719,55 @@ function submit(){
   submitted=true;submitWarn=warn;
   var comment=warn?'직접 점검이 필요한 신호였어요. 연락 주셔서 다행이에요.':DOC[tone][day];
   log.push({day:day,state:stateLabel(),comment:comment});
-  dayPhase='sent';
-  showKakao(true);
-  if(replyTimer)clearTimeout(replyTimer);
-  replyTimer=setTimeout(deliverReply, warn?500:1600);
-}
-function maybeComplete(){
-  if(submitted && !submitWarn && doneRoutine>=3 && !celebrated){celebrated=true;var nw=document.getElementById('nextwrap');if(nw)nw.classList.add('show');setTimeout(openCele,450);}
+  openResult(warn);
 }
 
-function toggleTask(el){if(el.classList.contains('done'))return;el.classList.add('done');doneRoutine++;document.getElementById('rc').textContent=doneRoutine;maybeComplete();}
+function toggleTask(el){if(el.classList.contains('done'))return;el.classList.add('done');doneRoutine++;var rc=document.getElementById('rc');if(rc)rc.textContent=doneRoutine;ready();}
 
-/* ---------- celebration ---------- */
-function openCele(){
-  var day=curDay(),last=(idx>=JOURNEY.length-2);
-  document.getElementById('celeH').innerHTML='회복 '+day+'일째 '+(tone==='formal'?'기록 완료':'완료!')+(tone==='playful'?' 🎉':'');
-  document.getElementById('celeM').innerHTML=CELE_M[tone];
-  document.getElementById('celeGo').textContent=last?'졸업 보기 →':'다음 날 받아보기 →';
+/* ---------- in-page result popup → then kakao reply ---------- */
+function openResult(warn){
+  var h=document.getElementById('celeH'),m=document.getElementById('celeM'),
+      go=document.getElementById('celeGo'),sh=document.querySelector('.cele .sh'),
+      note=document.querySelector('.cele .celenote'),bt=document.querySelector('.cele .bt');
+  if(warn){
+    bt.style.display='none';
+    h.textContent='직접 확인이 필요해요';
+    m.innerHTML=SAFE.warnBody;
+    go.className='go warn';go.textContent='병원에 바로 연락하기';
+    go.onclick=function(){location.href='tel:0507-1326-1691';};
+    sh.textContent='닫기';sh.onclick=closeResult;
+    note.textContent='지금 바로 병원에 연락해 주세요';
+  }else{
+    bt.style.display='';
+    h.textContent='오늘 기록 감사합니다';
+    m.innerHTML='알려드린 <b>체크리스트</b>, 오늘 꼭 지켜 주세요.';
+    go.className='go';go.textContent='완료';go.onclick=closeResult;
+    sh.textContent='소개하기';sh.onclick=share;
+    note.textContent='닫으면 원장님 답장이 카톡으로 도착해요';
+  }
   document.getElementById('veil').classList.add('show');
 }
-function share(){document.getElementById('veil').classList.remove('show');toast('초대 링크가 복사됐어요 (데모)');}
+function closeResult(){
+  document.getElementById('veil').classList.remove('show');
+  dayPhase='replied';
+  showKakao();
+}
+function share(){
+  var url='https://dental.demo.velnoc.com/', data={title:'환자 회복 관리 · VELNOC',text:'시술 후 환자가 매일 받는 회복 관리 화면이에요',url:url};
+  if(navigator.share){navigator.share(data).catch(function(){});}
+  else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){toast('링크가 복사됐어요 · 친구에게 붙여넣기 하세요');}).catch(function(){toast('복사에 실패했어요 — dental.demo.velnoc.com');});}
+  else{toast('주소: dental.demo.velnoc.com');}
+}
 
 /* ---------- graduation ---------- */
 function gradView(){
-  var h='<div class="grad rise"><div class="cap" style="position:static;display:block;opacity:1;background:none;box-shadow:none;padding:0;font-size:1.9rem">🎓</div><h2>2주 회복 일기, '+(tone==='formal'?'완료':'졸업')+'</h2><p>하루도 빠지지 않았어요. 그 기록이 그대로 '+pname()+'의 회복 과정이에요.</p></div>';
-  h+='<div class="timeline rise" style="animation-delay:.08s"><h3>그동안의 일기</h3>';
-  if(log.length===0){h+='<div class="empty">아직 기록이 없어요. 처음부터 다시 진행해보세요.</div>';}
+  var h='<div class="gsheet rise">'+
+    '<div class="gsheet-top"><div class="gclinic">'+setup.clinic+'</div><div class="gtitle">임플란트 회복 케어 완료</div><div class="gsub">'+pname()+' · 2주 회복 관리 기록</div></div>'+
+    '<div class="nextvisit"><div class="nv-lab">다음 정기검진</div><div class="nv-date">'+checkupLabel()+'</div><div class="nv-dday">D-'+checkupDDay()+'</div></div>'+
+    '<div class="grec"><div class="grec-h">회복 기록 요약 · 총 '+log.length+'일</div>';
+  if(log.length===0){h+='<div class="empty">아직 기록이 없어요. 처음부터 다시 진행해 보세요.</div>';}
   else{log.forEach(function(e){h+='<div class="entry"><div class="ed">'+e.day+'일째</div><div class="es">'+e.state+'</div><div class="ec">"'+e.comment+'"</div></div>';});}
-  h+='</div><button class="restartbtn" onclick="restart()">처음부터 다시 보기 ↺</button>';
+  h+='</div></div><button class="restartbtn" onclick="restart()">처음부터 다시 보기 ↺</button>';
   return h;
 }
 function attachGradBtn(){}
@@ -690,13 +775,14 @@ function restart(){idx=0;log=[];resetDay();renderProg();showKakao();}
 
 /* ---------- tone / cap / toast ---------- */
 function setTone(t){tone=t;syncTone();var sc=document.getElementById('stage').dataset.screen;if(sc==='kakao')showKakao(true);else if(sc==='diary'){input={swelling:null,pain:4,bleeding:null};doneRoutine=0;showDiary();}}
-function toggleCap(){annoOn=!annoOn;document.getElementById('capx').textContent=annoOn?'💡':'💬';if(annoOn){dismissed={};}else{var sp=document.getElementById('spot');if(sp)sp.classList.remove('on');}if(annoUpdate)annoUpdate();}
-function showContact(){toast(DEV_CONTACT);}
+function toggleCap(){annoOn=!annoOn;var b=document.getElementById('capx');if(b){b.classList.toggle('on',annoOn);b.setAttribute('aria-pressed',annoOn);}if(annoOn){dismissed={};}else{var sp=document.getElementById('spot');if(sp)sp.classList.remove('on');}if(annoUpdate)annoUpdate();}
+function showContact(){document.getElementById('contactVeil').classList.add('show');}
+function closeContact(){document.getElementById('contactVeil').classList.remove('show');}
 function shareDemo(){
-  var url=location.href, data={title:'환자 회복 관리 데모 · VELNOC',text:'시술 후 환자가 매일 받는 회복 관리 화면 데모예요',url:url};
+  var url='https://dental.demo.velnoc.com/', data={title:'환자 회복 관리 데모 · VELNOC',text:'시술 후 환자가 매일 받는 회복 관리 화면 데모예요',url:url};
   if(navigator.share){navigator.share(data).catch(function(){});}
-  else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){toast('데모 링크가 복사됐어요');}).catch(function(){toast('주소창의 URL을 복사해 공유해 주세요');});}
-  else{toast('주소창의 URL을 복사해 공유해 주세요');}
+  else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){toast('데모 링크가 복사됐어요');}).catch(function(){toast('주소: dental.demo.velnoc.com');});}
+  else{toast('주소: dental.demo.velnoc.com');}
 }
 var tt;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show');},2300);}
 
