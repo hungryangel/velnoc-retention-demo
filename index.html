@@ -294,6 +294,14 @@
   .confetti{position:absolute;inset:0;border-radius:24px;overflow:hidden;pointer-events:none;z-index:6}
   .confetti i{position:absolute;top:40px;width:9px;height:9px;border-radius:2px;will-change:transform,opacity;animation:confettiPop var(--dur,1100ms) cubic-bezier(.15,.7,.3,1) forwards}
   @keyframes confettiPop{0%{opacity:0;transform:translate(0,0) rotate(0) scale(.5)}12%{opacity:1}100%{opacity:0;transform:translate(var(--dx,0),var(--dy,200px)) rotate(var(--rot,360deg)) scale(1)}}
+  /* 일기 화면 진입: 아래에서 슬라이드 업 + 로딩 */
+  @keyframes diaryUp{from{transform:translateY(16%);opacity:.35}to{transform:translateY(0);opacity:1}}
+  .dview.slideup{animation:diaryUp .46s cubic-bezier(.2,.85,.25,1)}
+  .loadview{position:absolute;inset:0;z-index:47;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;background:var(--patient-bg);transition:opacity .35s ease}
+  .loadview.hide{opacity:0;pointer-events:none}
+  .loadview .spinner{width:34px;height:34px;border-radius:50%;border:3px solid #CDD8DF;border-top-color:var(--pine);animation:spin .8s linear infinite}
+  .loadview .lt{font-size:.82rem;font-weight:600;color:var(--sage)}
+  @keyframes spin{to{transform:rotate(360deg)}}
   .cele .ctitle{font-size:1.18rem;font-weight:800;color:var(--ink)}
   .cele .cmsg{font-size:.84rem;color:var(--sage);line-height:1.55;margin-top:9px;word-break:keep-all}
   .cbtn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;border-radius:13px;padding:14px;font-family:inherit;font-size:.9rem;font-weight:700;text-decoration:none;margin-top:11px;cursor:pointer;box-sizing:border-box}
@@ -451,6 +459,7 @@
               <div id="dbody"></div>
               <div class="foot"><span id="ftName">이음치과</span> 회복관리 · 데모 화면입니다 · by <b>VELNOC</b><br>교육용 데모예요 · 이상 증상은 바로 병원에 연락하세요</div>
             </div>
+            <div class="loadview hide" id="loadview" aria-hidden="true"><div class="spinner"></div><div class="lt">회복 일기 불러오는 중…</div></div>
           </div>
 
           <div class="veil" id="veil"><div class="cele"><div class="bt"><svg viewBox="0 0 24 24"><path class="tf" d="M12 2C7.5 2 4.5 5 4.5 9c0 3 .9 4.6 1.4 7.4.4 2.3 1 5.6 2.6 5.6 1.4 0 1.6-2.2 1.9-4.1.3-1.6.9-1.9 1.6-1.9s1.3.3 1.6 1.9c.3 1.9.5 4.1 1.9 4.1 1.6 0 2.2-3.3 2.6-5.6.5-2.8 1.4-4.4 1.4-7.4 0-4-3-7-7.5-7z"/></svg></div><h3 id="celeH"></h3><p class="m" id="celeM"></p><div class="celeprog" id="celeProg" hidden><div class="cp-row"><span class="cp-lab" id="cpLab"></span><span class="cp-val" id="cpVal"></span></div><div class="cp-track"><div class="cp-fill" id="cpFill"></div></div></div><button class="go" id="celeGo" onclick="advanceFromCele()"></button><button class="sh" onclick="share()">친구에게 소개하기</button><p class="celenote">실제 환자는 내일 이 시간에 카톡으로 다음 안내를 자동으로 받아요 · 위 버튼은 데모를 넘기는 용도예요</p><div class="confetti" id="confetti" aria-hidden="true"></div></div></div>
@@ -604,6 +613,8 @@ function startDemo(){
   showKakao();
 }
 function showSetup(){
+  if(diaryLoadTimer){clearTimeout(diaryLoadTimer);diaryLoadTimer=null;}
+  var lvs=document.getElementById('loadview');if(lvs)lvs.classList.add('hide');
   ['kview','dview'].forEach(function(id){document.getElementById(id).classList.remove('show');});
   document.getElementById('kinput').style.display='none';
   hideDemoNext();
@@ -623,18 +634,41 @@ function advance(){ if(idx<JOURNEY.length-1){idx++;resetDay();renderProg();showK
 function advanceFromCele(){document.getElementById('veil').classList.remove('show');advance();}
 
 function showKakao(instant){
+  if(diaryLoadTimer){clearTimeout(diaryLoadTimer);diaryLoadTimer=null;}
+  var lvk=document.getElementById('loadview');if(lvk)lvk.classList.add('hide');
   ['sview','dview'].forEach(function(id){document.getElementById(id).classList.remove('show');});
   var k=document.getElementById('kview');k.classList.add('show');k.scrollTop=0;
   document.getElementById('kinput').style.display='flex';
   setScreen('kakao');renderThread(instant);
 }
+var diaryLoadTimer=null;
 function showDiary(){
-  ['sview','kview'].forEach(function(id){document.getElementById(id).classList.remove('show');});
+  document.getElementById('sview').classList.remove('show');
   document.getElementById('kinput').style.display='none';
   hideDemoNext();
-  var d=document.getElementById('dview');d.classList.add('show');d.scrollTop=0;
-  setScreen('diary');renderDiary();
-  attachAnno('diary');
+  var d=document.getElementById('dview'),kv=document.getElementById('kview'),lv=document.getElementById('loadview');
+  setScreen('diary');
+  renderDiary();
+  d.scrollTop=0;d.classList.add('show');
+  if(diaryLoadTimer){clearTimeout(diaryLoadTimer);diaryLoadTimer=null;}
+  if(prefersReduce()){
+    if(kv)kv.classList.remove('show');
+    if(lv)lv.classList.add('hide');
+    attachAnno('diary');
+    return;
+  }
+  // 아래에서 스르륵 슬라이드 업
+  d.classList.remove('slideup');void d.offsetWidth;d.classList.add('slideup');
+  // 로딩 오버레이 표시 (실제 페이지 로딩처럼)
+  if(lv)lv.classList.remove('hide');
+  // 슬라이드가 카톡 위로 올라온 뒤 카톡 화면 정리
+  setTimeout(function(){if(kv)kv.classList.remove('show');},480);
+  // 잠깐 로딩 후 콘텐츠 등장
+  diaryLoadTimer=setTimeout(function(){
+    if(lv)lv.classList.add('hide');
+    attachAnno('diary');
+    diaryLoadTimer=null;
+  },800);
 }
 
 function attachAnno(screen){
