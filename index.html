@@ -380,6 +380,25 @@
   /* 복사/공유 확인 토스트: 폰 밖(뷰포트 기준)으로 띄워 항상 보이게 + 중립 잉크 */
   .toast{position:fixed;bottom:calc(86px + env(safe-area-inset-bottom));z-index:9999;background:var(--vn-ink)}
 
+  /* ====== 첫 화면 이후(데모 화면): 상단 헤더 제거 → 컨트롤을 하단 고정 바로 ====== */
+  body:not([data-screen="setup"]) .tbtitle,
+  body:not([data-screen="setup"]) .tbsub,
+  body:not([data-screen="setup"]) .tbdiv{display:none}
+  body:not([data-screen="setup"]) .topbar{position:static;background:transparent;box-shadow:none}
+  body:not([data-screen="setup"]) .tbinner{padding:0;max-width:none}
+  body:not([data-screen="setup"]) .tbhead{display:block;max-height:none;overflow:visible;will-change:auto}
+  body:not([data-screen="setup"]) .tbutils{
+    position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);
+    width:min(420px, 100vw - 20px);flex-wrap:nowrap;justify-content:space-between;gap:6px;
+    background:#fff;border:1px solid var(--vn-line);border-radius:18px;padding:8px 9px;
+    box-shadow:0 14px 32px -12px rgba(0,0,0,.3);z-index:120;
+    animation:ctrlUp .42s cubic-bezier(.2,.85,.25,1) both}
+  @keyframes ctrlUp{from{transform:translate(-50%,140%);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+  body:not([data-screen="setup"]) .tbutils .tbtn{flex:1 1 0;text-align:center;padding:8px 6px;font-size:.74rem}
+  body:not([data-screen="setup"]) .tbutils .tbtoggle{flex:0 0 auto;padding:7px 10px;font-size:.74rem}
+  body:not([data-screen="setup"]) .demonext{bottom:calc(78px + env(safe-area-inset-bottom))}
+  body:not([data-screen="setup"]) .stage{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+
   /* ---- 모바일: 스크롤 시 헤더 접힘 + 레이아웃 최적화 ---- */
   @media (max-width:640px){
     .topbar.collapsed .tbhead{max-height:0;opacity:0;overflow:hidden}
@@ -400,7 +419,7 @@
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
-<body>
+<body data-screen="setup">
 
   <div class="topbar">
   <div class="tbinner">
@@ -620,13 +639,14 @@ function showSetup(){
   hideDemoNext();
   document.getElementById('sview').classList.add('show');
   document.getElementById('stage').dataset.screen='setup';
+  document.body.dataset.screen='setup';
   clearNotes();
   document.getElementById('inClinic').value=setup.clinic;
   document.getElementById('inDoctor').value=setup.doctor;
 }
 
 /* ---------- nav ---------- */
-function setScreen(s){document.getElementById('stage').dataset.screen=s;}
+function setScreen(s){document.getElementById('stage').dataset.screen=s;document.body.dataset.screen=s;}
 function clearNotes(){if(annoCleanup){annoCleanup();annoCleanup=null;}var sp=document.getElementById('spot');if(sp)sp.classList.remove('on');}
 function resetDay(){input={swelling:null,pain:4,bleeding:null};doneRoutine=0;submitted=false;submitWarn=false;celebrated=false;dayPhase='knock';if(replyTimer){clearTimeout(replyTimer);replyTimer=null;}}
 function jumpTo(i){idx=i;resetDay();renderProg();showKakao();}
