@@ -628,6 +628,7 @@ function renderProg(){
 }
 
 /* ---------- setup ---------- */
+function scrollPageTop(){try{window.scrollTo(0,0);}catch(e){}document.documentElement.scrollTop=0;document.body.scrollTop=0;}
 function pickAge(a){setup.age=a;document.querySelectorAll('#agewrap button').forEach(function(b){b.classList.toggle('on',b.dataset.age===a);});document.getElementById('ageHint').innerHTML=ageHintTxt[a];}
 function startDemo(){
   setup.clinic=(document.getElementById('inClinic').value||'').trim()||'이음치과';
@@ -637,6 +638,7 @@ function startDemo(){
   showKakao();
 }
 function showSetup(){
+  scrollPageTop();
   if(diaryLoadTimer){clearTimeout(diaryLoadTimer);diaryLoadTimer=null;}
   var lvs=document.getElementById('loadview');if(lvs)lvs.classList.add('hide');
   ['kview','dview'].forEach(function(id){document.getElementById(id).classList.remove('show');});
@@ -659,6 +661,7 @@ function advance(){ if(idx<JOURNEY.length-1){idx++;resetDay();renderProg();showK
 function advanceFromCele(){document.getElementById('veil').classList.remove('show');advance();}
 
 function showKakao(instant){
+  scrollPageTop();
   if(diaryLoadTimer){clearTimeout(diaryLoadTimer);diaryLoadTimer=null;}
   var lvk=document.getElementById('loadview');if(lvk)lvk.classList.add('hide');
   ['sview','dview'].forEach(function(id){document.getElementById(id).classList.remove('show');});
@@ -668,6 +671,7 @@ function showKakao(instant){
 }
 var diaryLoadTimer=null;
 function showDiary(){
+  scrollPageTop();
   document.getElementById('sview').classList.remove('show');
   document.getElementById('kinput').style.display='none';
   hideDemoNext();
@@ -897,6 +901,7 @@ function openResult(warn){
     sh.textContent='소개하기';sh.onclick=share;
     note.textContent='닫으면 원장님 답장이 카톡으로 도착해요';
   }
+  scrollPageTop();
   document.getElementById('veil').classList.add('show');
   if(!warn)celebrateResult(bt);
 }
