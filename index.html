@@ -152,6 +152,11 @@
   .ktext{padding:14px 16px 12px;font-size:.85rem;line-height:1.65;color:#1f1f1f;white-space:pre-line}
   .ktext .dr{font-weight:inherit;color:inherit}
   .kgo,.klink{border-top:1px solid #ECEEF0;padding:13px;text-align:center;font-size:.85rem;font-weight:600;color:#4b4b4b;background:#F6F7F8;cursor:pointer}
+  /* 기록 CTA: 클릭 유도(펄스 + 화살표 흔들림) */
+  .kgo.cta{color:var(--pine);font-weight:700;background:#EAF3EE;animation:kgoGlow 1.9s ease-in-out infinite}
+  @keyframes kgoGlow{0%,100%{background:#EAF3EE;box-shadow:inset 0 0 0 0 rgba(30,77,69,0)}50%{background:#D8EBE1;box-shadow:inset 0 0 0 1.6px rgba(30,77,69,.22)}}
+  .kgoar{display:inline-block;animation:kgoNudge 1.15s ease-in-out infinite;will-change:transform}
+  @keyframes kgoNudge{0%,55%,100%{transform:translateX(0)}30%{transform:translateX(6px)}}
   .kgo:active,.klink:active{background:#EEF0F2}
   .kmeta{margin:6px 0 14px 3px;display:flex;flex-direction:column;gap:2px}
   .kmetarow{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:7px 3px 16px 3px}
@@ -776,7 +781,7 @@ function renderThread(instant){
   var dateLbl=(idx===0?'오늘 · '+dayDate(day):dayDate(day)), knockTxt=inj(KNOCK[tone][day]);
   if(dayPhase==='knock'){
     var btn=(day===14?BTN14:BTN[tone]);
-    var knockCard='<div class="kcard"><div class="kalim">'+m.alim+'</div><div class="ktext">'+knockTxt+'</div><div class="kgo" onclick="showDiary()">'+btn+' →</div></div>';
+    var knockCard='<div class="kcard"><div class="kalim">'+m.alim+'</div><div class="ktext">'+knockTxt+'</div><div class="kgo cta" onclick="showDiary()">'+btn+' <span class="kgoar">→</span></div></div>';
     b.innerHTML='<div class="kdate">'+dateLbl+'</div><div class="krow" id="krow"><div class="kava"><svg viewBox="0 0 24 24"><path d="'+TOOTH+'"/></svg></div><div class="kmid"><div class="kname">'+setup.clinic+'</div><div class="bub">'+(instant?'':'<div class="kcard"><div class="ktyping"><span></span><span></span><span></span></div></div>')+'</div></div></div>';
     var row=document.getElementById('krow');
     function injectKnock(){var r=document.getElementById('krow');if(!r)return;r.innerHTML=rowInner(knockCard);attachAnno('kakao');}
