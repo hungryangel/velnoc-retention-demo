@@ -52,7 +52,7 @@
   .tbtoggle.on .sw{background:var(--pine)}
   .tbtoggle.on .sw:after{transform:translateX(11px)}
   .tbsub{margin-top:5px;font-size:.7rem;color:#9A8E76;line-height:1.45;max-height:200px;opacity:1;overflow:hidden;transition:max-height .24s ease,opacity .2s ease,margin-top .24s ease;will-change:max-height,opacity}
-  .navrow{display:flex;align-items:center;gap:8px;margin-top:11px}
+  .navrow{display:flex;align-items:center;gap:10px;width:min(392px, 100vw - 24px);margin:16px auto 2px}
   .navlab{font-size:.62rem;font-weight:700;letter-spacing:.04em;color:#9A8E76;white-space:nowrap}
   .prog{display:flex;gap:5px;flex:1}
   .prog button{flex:1;font-family:inherit;font-size:.72rem;font-weight:700;color:#6B6149;background:#fff;border:1px solid #DDD3BE;border-radius:99px;padding:7px 4px;cursor:pointer;transition:all .18s}
@@ -64,7 +64,7 @@
   .toneset button{flex:1;font-family:inherit;font-size:.72rem;font-weight:700;color:#8A7F68;background:#F3EEE2;border:1px solid #DDD3BE;border-radius:99px;padding:6px 4px;cursor:pointer;transition:all .16s}
   .toneset button.on{background:var(--apricot);border-color:var(--apricot);color:#3a1b0e}
 
-  .stage{position:relative;max-width:880px;margin:0 auto;padding:8px 0 70px;display:flex;justify-content:center}
+  .stage{position:relative;max-width:880px;margin:0 auto;padding:8px 0 70px;display:flex;flex-direction:column;align-items:center}
   .device{position:relative;width:min(392px, 100vw - 24px);flex:0 0 auto;z-index:2}
   .demonext{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:200;white-space:nowrap;background:var(--ink);color:#fff;border:none;border-radius:99px;padding:13px 24px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;box-shadow:0 10px 26px -6px rgba(20,40,36,.6)}
   .demonext[hidden]{display:none}
@@ -379,6 +379,9 @@
     .topbar.collapsed .navrow{margin-top:0}
     .topbar.collapsed .tbinner{padding-top:8px;padding-bottom:8px}
     .stage{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+    /* 모바일: 폰이 뷰포트보다 커서 가운데 정렬 시 시작 버튼이 하단에 가려짐 → 위 정렬로 버튼을 끌어올림 */
+    .setup{margin-block:0}
+    .setup .lead{margin-top:7px}
   }
   @media (max-width:480px){
     .tbhead{flex-wrap:wrap;gap:8px}
@@ -404,10 +407,6 @@
       </div>
     </div>
     <div class="tbsub">수술 당일부터 2주까지, 환자가 받는 화면 그대로의 데모예요 · 다른 진료과·시술에도 똑같이 맞출 수 있어요</div>
-    <div class="navrow">
-      <span class="navlab">시나리오 단계</span>
-      <div class="prog" id="prog"></div>
-    </div>
   </div>
   </div>
 
@@ -463,6 +462,10 @@
         </div>
       </div>
       <button class="demonext" id="demonext" onclick="advance()" hidden></button>
+    </div>
+    <div class="navrow">
+      <span class="navlab">시나리오 단계</span>
+      <div class="prog" id="prog"></div>
     </div>
   </div>
 
